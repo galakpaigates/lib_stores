@@ -2,3 +2,4 @@ flask
 cs50 
 Pillow
 werkzeug
+opencv-python
