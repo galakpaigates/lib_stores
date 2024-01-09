@@ -1,7 +1,5 @@
 flask
-cs50 
-Pillow
-werkzeug
+cs50
 opencv-python
 click==7.1.2
 Flask==1.1.2
