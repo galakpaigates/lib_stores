@@ -3,5 +3,3 @@ cs50
 Pillow
 werkzeug
 opencv-python
-gunicorn
-uvicorn
