@@ -4,3 +4,4 @@ Pillow
 werkzeug
 opencv-python
 gunicorn
+uvicorn
