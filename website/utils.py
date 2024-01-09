@@ -1,14 +1,8 @@
-from PIL import Image
-import re, os, ssl, smtplib
+import ssl, smtplib, cv2
 from functools import wraps
 from flask import render_template, request, session, redirect, url_for, current_app
 from string import ascii_uppercase, ascii_lowercase, punctuation, digits, ascii_letters
-import base64
 from email.message import EmailMessage
-
-from google import auth
-from googleapiclient.discovery import build
-from googleapiclient.errors import HttpError
 
 MAIL_ADDR = "galakpaigates@gmail.com"
 APP_PASSWORD = "iyyo gtfw ljsd cvtm "
@@ -279,12 +273,16 @@ def remove_punc_from_str_end(string, idx=None):
 
 
 def validate_image(file_path):
+    
     try:
-        image = Image.open(file_path)
-        format = image.format
-        width, height = image.size
-        # Additional validations can be added
+        
+        image = cv2.imread(file_path)
+        print(image)
+        if image is None:
+            return False
+        
         return True
+    
     except Exception as e:
         return False
 

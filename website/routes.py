@@ -1,16 +1,12 @@
-from curses.ascii import isdigit
-from email.mime import base
-from nis import cat
 from flask import Blueprint, render_template, request, flash, redirect, url_for, session
 import re, os, base64
 from datetime import datetime
-import time
 
-from requests import head
 from website.utils import *
+from website import lib_stores_db
+
 from werkzeug.datastructures import FileStorage
 from werkzeug.utils import secure_filename
-from website import lib_stores_db
 from werkzeug.security import generate_password_hash, check_password_hash
 
 all_routes = Blueprint("all_routes", __name__)
@@ -263,6 +259,9 @@ def sign_up_as_store():
             picture_data
         )
         
+        # remove image that was temporarily saved to upload to database
+        os.remove(filepath)
+        
         flash(message=("Store Registered!", "Success: You now have your Store on LIB Stores!",), category="success")
         return redirect(url_for("all_routes.index"))
         
@@ -302,8 +301,6 @@ def sign_up_as_customer():
         # ensure confirmation password is the same as the first password
         elif confirm_password != password:
             return refill_input_fields(sign_up_type="customer", confirm_password_error="Passwords don't match!")
-
-        print("All is well!")
         
         # add this customer to the customers table in lib_stores_db
         lib_stores_db.execute(
@@ -437,6 +434,7 @@ def logout():
     
     # clear all the saved information from the session to indicate the user has logged out
     session.clear()
+    
     # then send the user to the login page
     return redirect(url_for("all_routes.login"))
 
@@ -552,6 +550,13 @@ def add_product():
             )
 
         lib_stores_db.execute("COMMIT;")
+        
+        # delete all the temporarily saved pictures
+        for picture in product_picture_list:
+            filename = secure_filename(picture.filename)
+            filepath = os.path.join(os.path.dirname(__file__), 'static/imgs/tmp_profile', filename)
+            
+            os.remove(filepath)
 
         picture_data_list = []
         flash(message=("Product Added!", "Success: You have added a Product to your Store!"), category="success")

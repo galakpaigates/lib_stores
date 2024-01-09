@@ -14,7 +14,8 @@ try
 {
     document.getElementById('customFile').addEventListener('change', (event) => 
     {
-        document.getElementById("product_picture_preview_div").style.padding = "2em 0";
+        if (event.target.files[0].type.startsWith("image/"))
+            document.getElementById("product_picture_preview_div").style.padding = "2em 0";
 
         var selected_profile_picture;
 
