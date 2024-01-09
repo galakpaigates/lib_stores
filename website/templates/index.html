@@ -1,0 +1,70 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Home
+{% endblock title %}
+
+{% block main %}
+
+    <h3>Our Products</h3>
+
+    {% if full_product_information %}
+
+        <div id="all_products_div">
+            {% for product_info in full_product_information %}
+                {% if product_info.quantity > 0 %}
+                
+                    <div class="each_product_div">
+                        <div id="carouselExampleControls" class="carousel slide product_picture_div" data-bs-ride="carousel">
+                            <button class="prev_pic" type="button">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            </button>
+
+                            <a href="/products/{{ product_info.id }}+{{ product_info.store_id }}">
+                                <div class="carousel-inner product_pictures_slideshow_div">
+                                    <div class="carousel-item active">
+                                        <img src="data:image/png;base64,{{ product_id_and_photos[product_info.id][0]['picture'] }}" class="product_picture" alt="{{ product_info.name }}">
+                                    </div>
+
+                                    {% for picture_data in product_id_and_photos[product_info.id] %}
+                                        {% if loop.index != 1 %}
+                                        
+                                            <div class="carousel-item">
+                                                <img src="data:image/png;base64,{{ picture_data['picture'] }}" class="product_picture" alt="{{ product_info.name }}">
+                                            </div>
+
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </a>
+
+                            <button class="next_pic" type="button">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            </button>
+                        </div>
+
+                        <a href="/products/{{ product_info.id }}+{{ product_info.store_id }}">
+                            <div class="product_info_div">
+                                <div class="product_name_div">
+                                    {{ product_info.name }}
+                                </div>
+                                <div class="product_price_div">
+                                    ({{ product_info.price }})
+                                </div>
+                                <button class="purchase_product">&dollar; Purchase</button>
+                            </div>
+                        </a>
+                    </div>
+                {% endif %}
+                
+            {% endfor %}
+        </div>
+
+    {% else %}
+
+        <h2>No Product Currently</h2>
+
+    {% endif %}
+
+
+{% endblock main %}

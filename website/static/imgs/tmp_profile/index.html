@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Home
+{% endblock title %}
+
+{% block main %}
+
+    <h3>Our Products</h3>
+
+    {% if full_product_information %}
+
+        <div id="all_products_div">
+            {% for product_info in full_product_information %}
+
+            <div class="each_product_div">
+                <div id="carouselExampleControls" class="carousel slide product_picture_div" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        <a href="/products/{{ product_info.id }}+{{ product_info.store_id }}">
+                            {% for picture_data in product_id_and_photos[product_info.id] %}
+                                <div class="carousel-item active">
+                                    <img src="data:image/png;base64,{{ picture_data['picture'] }}" class="w-100 product_picture" alt="{{ product_info.name }}">
+                                </div>
+                            {% endfor %}
+                        </a>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+
+                <div class="product_info_div">
+                    <a href="/products/{{ product_info.id }}+{{ product_info.store_id }}">
+                        <div class="product_name_div">
+                            {{ product_info.name }}
+                        </div>
+                        -
+                        <div class="product_price_div">
+                            {{ product_info.price }}
+                        </div>
+                        <button class="purchase_product">&dollar; Purchase</button>
+                    </a>
+                </div>
+            </div>
+                
+            {% endfor %}
+        </div>
+
+    {% else %}
+
+        <h2>No Product Currently</h2>
+
+    {% endif %}
+
+
+{% endblock main %}

@@ -1,0 +1,184 @@
+:root {
+    --white: #eee7e7;
+    --platinum: #e3e1e3;
+    --gray: #7d8183;
+    --light-gray: #34475b;
+    --ash-gray: #70b6df;
+    --verdigris: #1caaab;
+    --feldgrau: #404940;
+    --dark-blue: #193053;
+}
+
+* {
+    font-family: 'Kanit', sans-serif;
+    font-family: 'Stylish', serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+a {
+    color: unset;
+    text-decoration: none;
+}
+
+a:hover {
+    color: cornflowerblue;
+    text-decoration: unset;
+}
+
+/* all screen size css begins here */
+#navbar,
+.dropdown-menu,
+.nav-link,
+.dropdown-item,
+#search_form input[type='search'],
+#search_form button[type='submit'],
+.navbar-toggler-icon {
+    color: var(--white) !important;
+    background-color: var(--dark-blue) !important;
+    font-weight: 700;
+    font-size: large;
+}
+
+#navbar {
+    margin-bottom: 5vh;
+    display: flex;
+    flex-direction: row;
+}
+
+#navbarSupportedContent {
+    display: flex;
+    flex-direction: row;
+}
+
+#search_form input[type='search']::placeholder {
+    color: var(--white) !important;
+}
+
+#search_form input[type='search'] {
+    background-color: transparent;
+    text-align: left !important;
+}
+
+#search_form button[type='submit']:hover {
+    color: var(--white) !important;
+    background-color: var(--verdigris) !important;
+}
+
+body {
+    background-color: var(--white);
+    overflow-x: hidden;
+    margin-bottom: 15vh;
+}
+
+main h1,
+main h2,
+main h3,
+main h4,
+main h5 {
+    color: var(--dark-blue);
+    text-align: center;
+    font-weight: 1000;
+}
+
+#profile_picture {
+    width: 4.5em;
+    height: 4.5em;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+#profile_picture_li {
+    list-style-type: none;
+}
+
+textarea {
+    min-height: 60px;
+}
+/* all screen size css ends here */
+
+/* desktop only css begins here */
+@media only screen and (min-width: 992px) {
+    #site_logo {
+        max-height: 70px;
+        margin-left: 0.75em;
+    }
+
+    #store_product_latest_ul {
+        width: 18vw;
+    }
+
+    #search_form {
+        right: 7.5em;
+        width: 42vw;
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+    }
+
+    #search_form input[type='search'] {
+        width: 29.5vw;
+        max-width: 400px;
+    }
+
+    #profile_and_logout_ul {
+        align-items: center;
+        justify-content: right;
+        flex: 1;
+    }
+
+    #search_form button[type='submit'] {
+        width: 9.5vw;
+        max-width: 150px;
+    }
+
+    #signup_login_ul {
+        position: absolute;
+        right: 2em;
+    }
+}
+/* desktop only css ends here */
+
+/* mobile only css begins here */
+@media only screen and (max-width: 991.9px) {
+    #site_logo {
+        max-height: 70px;
+        margin-left: -0.5em;
+    }
+
+    #search_form {
+        display: flex;
+        flex-direction: column;
+        width: 90vw;
+        margin-left: 2.9vw;
+        gap: 1.2em;
+    }
+
+    #search_form input[type='search'],
+    #search_form button[type='submit'] {
+        text-align: center;
+        width: 100% !important;
+        margin-right: 0 !important;
+    }
+
+    #navbar_toggle_btn {
+        margin-right: 0.5em;
+    }
+
+    #profile_picture {
+        width: 25vw;
+        height: 25vw;
+        max-height: 120px;
+        max-width: 120px;
+        object-fit: cover;
+    }
+
+    #profile_and_logout_ul {
+        align-items: center;
+        flex-direction: row;
+        justify-content: center;
+        gap: 7.5vw;
+    }
+}
+/* mobile only css ends here */
