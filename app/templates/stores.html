@@ -1,0 +1,158 @@
+{% extends "layout.html" %}
+
+{% block title %}Stores{% endblock title %}
+
+{% block main %}
+
+    {% if all_existing_stores %}
+
+        <div class="list-group" id="existing_stores_div">
+            {% for store in all_existing_stores %}
+        
+                <a href="/stores/{{ store.name | replace(' ', '-') }}+{{ store.id }}" class="list-group-item list-group-item-action flex-column align-items-start">
+                    <div class="each_existing_store_div">
+                        <div class="each_existing_store_profile_picture_div">
+                            <img src="data:image/png;base64,{{ store.profile_picture }}" alt="{{ store.name | title }}" class="each_existing_stores_profile_picture">
+                        </div>
+                        <div class="each_existing_store_description_div">
+                            <div class="d-flex w-100 justify-content-between each_existing_store_div_title">
+                                <h3 class="mb-1">{{ store.name }}</h3>
+                            </div>
+                            <div class="each_existing_store_div_paragraphs">
+                                <p class="mb-1">Product Type: {{ store.categories_of_product }}</p>
+                                <p class="mb-1">Head Branch: {{ store.head_branch_location }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                
+            {% endfor %}
+        </div>
+
+    {% elif store_full_information %}
+
+        <div id="store_full_information_div">
+            <div id="store_home_page_header_div">
+                <div id="store_profile_picture_div">
+                    <img src="data:image/png;base64,{{ store_full_information.profile_picture }}" alt="{{ store_full_information.name | title }}" id="store_profile_picture">
+                </div>
+                <div id="store_name_div">
+                    <h1>{{ store_full_information.name | title }}</h1>
+                    <h2>{{ store_full_information.categories_of_product }}</h2>
+                    <h3>{{ store_full_information.head_branch_location | title }}<h3>
+                </div>
+            </div>
+
+            <br>
+
+            <div id="store_page_content_div">
+                <div id="tab_btns_div">
+                    <button class="nav_bar_title" data-tabindex='0'>Products</button>
+                    <button class="nav_bar_title" data-tabindex='1'>Special Offers</button>
+                    <button class="nav_bar_title" data-tabindex='2'>About</button>
+                </div>
+                <br>
+                <ul class="nav nav-tabs" id="nav_tabs">
+                    <li>
+                        {% if store_products %}
+
+                            <div id="all_products_div">
+                                {% for product_info in store_products %}
+                    
+                                    <div class="each_product_div">
+                                        <div id="carouselExampleControls" class="carousel slide product_picture_div" data-bs-ride="carousel">
+                                            <button class="prev_pic" type="button">
+                                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                            </button>
+                        
+                                            <div class="carousel-inner product_pictures_slideshow_div">
+                                                <a href="/products/{{ product_info.id }}+{{ product_info.store_id }}">
+                                                    <div class="carousel-item active">
+                                                        <img src="data:image/png;base64,{{ product_id_and_photos[product_info.id][0]['picture'] }}" class="d-block w-100 product_picture" alt="{{ product_info.name }}">
+                                                    </div>
+                        
+                                                    {% for picture_data in product_id_and_photos[product_info.id] %}
+                                                        {% if loop.index != 1 %}
+                                                        
+                                                            <div class="carousel-item">
+                                                                <img src="data:image/png;base64,{{ picture_data['picture'] }}" class="d-block w-100 product_picture" alt="{{ product_info.name }}">
+                                                            </div>
+                        
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </a>
+                                            </div>
+                        
+                                            <button class="next_pic" type="button">
+                                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                            </button>
+                                        </div>
+                        
+                                        <div class="product_info_div">
+                                            <a href="/products/{{ product_info.id }}+{{ product_info.store_id }}">
+                                                <div class="product_name_div">
+                                                    {{ product_info.name }}
+                                                </div>
+                                                <div class="product_price_div">
+                                                    ({{ product_info.price }})
+                                                </div>
+                                                <button class="purchase_product">&dollar; Purchase</button>
+                                            </a>
+                                        </div>
+                                    </div>
+                                
+                                {% endfor %}
+                            </div>
+                
+                        {% else %}
+                    
+                            <h2>No Product Currently</h2>
+                    
+                        {% endif %}
+                    </li>
+
+                    <li>
+                        {% if special_offers %}
+                            {{ special_offers }}
+                        {% else %}
+                            <h3>No Special Offer Currently!</h3>
+                        {% endif %}
+                    </li>
+
+                    <li>
+                        <table class="table" id="store_about_table">
+                            <tbody>
+                                <tr>
+                                    <th scope="row">Head Branch: </th>
+                                    <td>{{ store_full_information.head_branch_location }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">All Branches</th>
+                                    <td>{{ store_full_information.branches_location }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Contact Number</th>
+                                    <td>+231{{ store_full_information.contact_number }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Email address</th>
+                                    <td>{{ store_full_information.email }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">More Information</th>
+                                    <td>{% if store_full_information.about | length > 0 %} {{ store_full_information.about }} {% else %} Just Business {% endif %} </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    {% else %}
+
+        <h2>No Registered Stores</h2>
+
+    {% endif %}
+
+{% endblock main %}

@@ -1,0 +1,144 @@
+/* all screen width css begins here */
+#signup_form .form-group label {
+    font-weight: 700;
+    font-size: 21px;
+}
+
+#signup_form button[type='submit'] {
+    background-color: var(--dark-blue);
+    color: var(--white);
+    padding: 10px 21px;
+    font-weight: 1000;
+    font-size: 21px;
+    border: none;
+    cursor: pointer;
+}
+
+#signup_form button[type='submit']:hover {
+    background-color: var(--white);
+    color: var(--dark-blue);
+    border: 2px solid var(--dark-blue);
+}
+
+#signup_form .invalid_feedback {
+    padding: 7px;
+    color: crimson;
+    outline: 1px solid crimson;
+    width: fit-content;
+    font-size: 14px;
+    margin: 5px 5px 0 0;
+    border-radius: 7px;
+}
+
+#show_passwords {
+    background-color: var(--dark-blue);
+    color: var(--white);
+    border: 2px solid var(--dark-blue);
+    padding: 3px;
+    cursor: pointer;
+    margin-top: 0.5em;
+}
+
+.show_passwords_label {
+    color: var(--gray);
+    font-size: 14px !important;
+    margin: 7px 0 0 7px;
+    cursor: pointer;
+}
+
+.custom-file label {
+    font-weight: 550 !important;
+    font-size: 18px !important;
+    margin-bottom: 7px;
+}
+
+.custom-file input[type='file'] {
+    cursor: pointer;
+}
+
+#profile_picture_preview {
+    margin: 30px 0 50px 0;
+    border-radius: 50%;
+    overflow: auto;
+    object-fit: cover;
+}
+
+#account_type_div {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10rem;
+    margin: 10vh 0 30vh 0;
+}
+
+#account_type_div a div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1em;
+    height: 100%;
+}
+
+.account_type_img_div img {
+    max-width: 350px;
+    object-fit: contain;
+}
+
+.account_type_title_div {
+    background-color: var(--platinum);
+    max-height: 65px;
+    width: 250px;
+    padding: 1vh 0;
+}
+/* all screen width css ends here */
+
+/* desktop only css begins here */
+@media only screen and (min-width: 992px) {
+    #signup_form {
+        width: 50vw !important;
+        margin-left: 25vw;
+    }
+
+    .product_picture_preview,
+    #profile_picture_preview {
+        width: 50vw;
+        height: 50vw;
+        max-width: 400px;
+        max-height: 400px;
+    }
+}
+/* desktop only css ends here */
+
+/* mobile only css begins here */
+@media only screen and (max-width: 991.9px) {
+    #signup_form {
+        width: 90vw !important;
+        margin: 5vh 0 15vh 5vw;
+    }
+
+    #profile_picture_preview {
+        width: 76vw;
+        height: 76vw;
+        margin-left: 7vw;
+        max-width: 400px;
+        max-height: 400px;
+    }
+
+    #account_type_div {
+        width: 100vw;
+    }
+
+    #account_type_div a div {
+        height: fit-content;
+        width: 86vw;
+    }
+
+    .account_type_img_div img {
+        max-width: 60vw;
+        max-height: 25vh;
+        margin-left: 15%;
+        object-fit: contain;
+    }
+}
+/* mobile only css ends here */
