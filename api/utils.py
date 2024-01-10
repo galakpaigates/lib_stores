@@ -1,4 +1,4 @@
-import ssl, smtplib, cv2
+import ssl, smtplib, imghdr
 from functools import wraps
 from flask import render_template, request, session, redirect, url_for, current_app
 from string import ascii_uppercase, ascii_lowercase, punctuation, digits, ascii_letters
@@ -275,13 +275,11 @@ def remove_punc_from_str_end(string, idx=None):
 def validate_image(file_path):
     
     try:
-        
-        image = cv2.imread(file_path)
-        print(image)
-        if image is None:
+        with open(file_path, "rb") as file:
+            image = imghdr.what(file)
+            if image:
+                return True
             return False
-        
-        return True
     
     except Exception as e:
         return False
