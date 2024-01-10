@@ -47,5 +47,11 @@ def index():
     return render_template("index.html", full_product_information=full_product_information, product_id_and_photos=product_id_and_photos)
 
 
+@app.errorhandler(404)
+def page_not_found(code=404):
+    flash(message=("404 - Page Not Found!", "You requested a page that does not exist on our server!"), category="danger")
+    return redirect(url_for("index"))
+
+
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
