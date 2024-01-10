@@ -1,4 +1,4 @@
 ./website/static/tmp_profile
-./venv
+./.venv
 ./__pycache__
 ./design
