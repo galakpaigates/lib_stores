@@ -1,5 +1,4 @@
 ./website/static/tmp_profile
 ./venv
-__pycache__
-design
-.vercelignore
+./__pycache__
+./design
