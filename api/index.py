@@ -52,3 +52,6 @@ def page_not_found(code=404):
     flash(message=("404 - Page Not Found!", "You requested a page that does not exist on our server!"), category="danger")
     return redirect(url_for("index"))
 
+
+if __name__ == "__main__":
+    app.run(port="5000", host="0.0.0.0")
