@@ -170,7 +170,7 @@ def sign_up_as_store():
 
         # save the file to a temporary location to open it and read its information, then store in the database as BLOB
         filename = secure_filename(profile_picture.filename)
-        filepath = os.path.join(os.path.dirname(__file__), 'static/imgs/tmp_profile', filename)
+        filepath = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
         
         profile_picture.save(filepath)
         
@@ -444,7 +444,7 @@ def add_product():
 
             # save the file to a temporary location to open it and read its information, then store in the database as BLOB
             filename = secure_filename(product_picture.filename)
-            filepath = os.path.join(os.path.dirname(__file__), 'static/imgs/tmp_profile', filename)
+            filepath = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
             
             product_picture.save(filepath)
             

@@ -17,8 +17,6 @@ def create_app():
     if UPLOAD_FOLDER.startswith("/app/app"):
         UPLOAD_FOLDER = UPLOAD_FOLDER.replace("/app", "", 1)
 
-    print(UPLOAD_FOLDER)
-    print(app.root_path)
     app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
     # register the routes created in routes.py
