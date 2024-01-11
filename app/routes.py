@@ -25,7 +25,7 @@ def display_all_stores():
     return render_template("stores.html", all_existing_stores=all_existing_stores)
 
 
-@all_routes.route("/stores/<store_name_id>")
+@all_routes.route("/stores/<store_name_id>/")
 @login_required
 def dynamic_store(store_name_id):
     
@@ -296,7 +296,7 @@ def login():
     return render_template("login.html", ACCOUNT_TYPES=ACCOUNT_TYPES)
 
 
-@all_routes.route("/login/store", methods=['POST', 'GET'])
+@all_routes.route("/login/store/", methods=['POST', 'GET'])
 def login_as_store():
     
     # make sure the current user's information is cleared
@@ -343,7 +343,7 @@ def login_as_store():
     return render_template("login.html", as_store=True)
 
 
-@all_routes.route("/login/customer", methods=['POST', 'GET'])
+@all_routes.route("/login/customer/", methods=['POST', 'GET'])
 def login_as_customer():
     
     # make sure the current user's information is cleared
@@ -391,7 +391,7 @@ def login_as_customer():
     return render_template("login.html", as_customer=True)
 
 
-@all_routes.route("/logout")
+@all_routes.route("/logout/")
 @login_required
 def logout():
     
@@ -402,7 +402,7 @@ def logout():
     return redirect(url_for("all_routes.login"))
 
 
-@all_routes.route("/add-product", methods=['POST', 'GET'])
+@all_routes.route("/add-product/", methods=['POST', 'GET'])
 @login_required
 def add_product():
     
@@ -524,7 +524,7 @@ def add_product():
     return render_template("add_product.html")
 
 
-@all_routes.route("/products/<product_id_and_store_id>")
+@all_routes.route("/products/<product_id_and_store_id>/")
 @login_required
 def product_page(product_id_and_store_id):
 
@@ -564,7 +564,7 @@ def product_page(product_id_and_store_id):
     return render_template("product_page.html", particular_product=particular_product, store_name=store_name, particular_product_photos=particular_product_photos, product_id_and_store_id=product_id_and_store_id)
 
 
-@all_routes.route("/buy", methods=['POST', 'GET'])
+@all_routes.route("/buy/", methods=['POST', 'GET'])
 @login_required
 def buy():
     product_quantity = request.form.get("product_quantity")
