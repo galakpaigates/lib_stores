@@ -25,7 +25,6 @@ try
 
             if (selected_profile_picture.type.startsWith("image/"))
             {
-
                 const read_file = new FileReader()
                 read_file.readAsDataURL(selected_profile_picture)
 
@@ -47,7 +46,7 @@ try
     {
         const selected_profile_picture = event.target.files[0]
         
-        if (selected_profile_picture.type.startsWith("image/")) 
+        if (selected_profile_picture.type.startsWith("image/"))
         {
             const read_file = new FileReader()
             read_file.readAsDataURL(selected_profile_picture)

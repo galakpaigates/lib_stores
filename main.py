@@ -54,10 +54,10 @@ def page_not_found(error):
 
 
 @app.errorhandler(500)
-def page_not_found(error):
-    flash(message=("500 - Internal Server Error!", "There is currently a problem with the server!"), category="danger")
+def internal_server_error(error):
+    flash(message=("500 - Internal Server Error!", "There is currently a problem with the server, please try again!"), category="danger")
     return redirect(url_for("index"))
 
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=int(os.getenv("PORT", default=5000)))
+    app.run(debug=False, host="0.0.0.0", port=int(os.getenv("PORT", default=5000)))

@@ -420,6 +420,5 @@ def clear_tmp_profile_dir():
 
         # Check if it's a file, and remove it
         if os.path.isfile(item_path):
-            os.unlink(item_path)
             os.remove(item_path)
 
