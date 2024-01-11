@@ -1,7 +1,7 @@
-from . import create_app, lib_stores_db
+from app import create_app, lib_stores_db
 import os, base64
-from flask import redirect, url_for, flash, render_template, request
-from .utils import login_required, usd
+from flask import redirect, url_for, flash, render_template
+from app.utils import login_required, usd
 
 app = create_app()
 
