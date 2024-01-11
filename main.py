@@ -48,8 +48,14 @@ def index():
 
 
 @app.errorhandler(404)
-def page_not_found(code=404):
+def page_not_found(error):
     flash(message=("404 - Page Not Found!", "You requested a page that does not exist on our server!"), category="danger")
+    return redirect(url_for("index"))
+
+
+@app.errorhandler(500)
+def page_not_found(error):
+    flash(message=("500 - Internal Server Error!", "There is currently a problem with the server!"), category="danger")
     return redirect(url_for("index"))
 
 
