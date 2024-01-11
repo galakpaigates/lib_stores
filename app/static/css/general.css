@@ -45,11 +45,11 @@ a:hover {
     margin-bottom: 5vh;
     display: flex;
     flex-direction: row;
-}
-
-#navbarSupportedContent {
-    display: flex;
-    flex-direction: row;
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    z-index: 1000;
 }
 
 #search_form input[type='search']::placeholder {
@@ -70,6 +70,10 @@ body {
     background-color: var(--white);
     overflow-x: hidden;
     margin-bottom: 15vh;
+}
+
+main {
+    margin-top: 9rem;
 }
 
 main h1,
@@ -179,6 +183,10 @@ textarea {
         flex-direction: row;
         justify-content: center;
         gap: 7.5vw;
+    }
+
+    main {
+        margin-top: 7.5em;
     }
 }
 /* mobile only css ends here */

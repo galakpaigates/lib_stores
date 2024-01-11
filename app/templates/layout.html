@@ -54,7 +54,7 @@
                     </li>
                     <li class="nav-item" id="profile_picture_li">
                         <a class="nav-link" href="{{ url_for('index') }}">
-                            <img src="/static/imgs/tmp_profile/shopping_bag.jpeg" alt="Profile Picture" id="profile_picture">
+                            <img src="{{ url_for("static", filename='imgs/shopping_bag.jpeg') }}" alt="Profile Picture" id="profile_picture">
                         </a>
                     </li>
                 </ul>
