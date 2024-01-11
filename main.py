@@ -1,7 +1,7 @@
-from __init__ import create_app, lib_stores_db
+from . import create_app, lib_stores_db
 import os, base64
 from flask import redirect, url_for, flash, render_template, request
-from utils import login_required, usd
+from .utils import login_required, usd
 
 app = create_app()
 
@@ -54,4 +54,4 @@ def page_not_found(code=404):
 
 
 if __name__ == "__main__":
-    app.run(port="5000", host="0.0.0.0")
+    app.run(port=int(os.environ.get("PORT", 5000)), host="0.0.0.0")

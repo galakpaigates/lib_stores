@@ -2,8 +2,8 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for,
 import re, os, base64
 from datetime import datetime
 
-from utils import *
-from __init__ import lib_stores_db
+from .utils import *
+from . import lib_stores_db
 
 from werkzeug.datastructures import FileStorage
 from werkzeug.utils import secure_filename

@@ -2,7 +2,7 @@ from flask import Flask
 from cs50 import SQL
 import os
 
-lib_stores_db = SQL("sqlite:///data/lib_stores.db")
+lib_stores_db = SQL("sqlite:///lib_stores.db")
 
 def create_app():
 
@@ -16,7 +16,7 @@ def create_app():
     app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
     # register the routes created in routes.py
-    from routes import all_routes
+    from .routes import all_routes
     
     app.register_blueprint(all_routes)
 
