@@ -14,8 +14,8 @@ def create_app():
     UPLOAD_FOLDER = os.path.join(app.root_path, 'static/imgs/tmp_profile')
     
     # ensusre there is no double /app at the beginning of the UPLOAD_FOLDER
-    if UPLOAD_FOLDER.startswith("/app"):
-        UPLOAD_FOLDER.replace("/app", "", 1)
+    if UPLOAD_FOLDER.startswith("/app/app"):
+        UPLOAD_FOLDER = UPLOAD_FOLDER.replace("/app", "", 1)
 
     app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
