@@ -668,9 +668,3 @@ def buy():
     flash(message=("Product Purchased!", "Success: You have purchased the product!"), category="success")
     return redirect(url_for("index"))
 
-
-@all_routes.route("/test_error")
-def test_error():
-    # Simulate a server error
-    1 / 0  # This will raise a ZeroDivisionError
-
