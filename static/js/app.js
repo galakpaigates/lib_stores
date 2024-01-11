@@ -46,14 +46,17 @@ try
     document.getElementById('customFile').addEventListener('change', (event) => 
     {
         const selected_profile_picture = event.target.files[0]
-
-        const read_file = new FileReader()
-        read_file.readAsDataURL(selected_profile_picture)
-
-        read_file.addEventListener('load', () =>
+        
+        if (selected_profile_picture.type.startsWith("image/")) 
         {
-            document.getElementById('profile_picture_preview_div').innerHTML = `<img id="profile_picture_preview" src="${read_file.result}" alt="Selected Image">`
-        });
+            const read_file = new FileReader()
+            read_file.readAsDataURL(selected_profile_picture)
+
+            read_file.addEventListener('load', () =>
+            {
+                document.getElementById('profile_picture_preview_div').innerHTML = `<img id="profile_picture_preview" src="${read_file.result}" alt="Selected Image">`
+            });
+        }
     })
 } catch (error) { /* pass */}
 

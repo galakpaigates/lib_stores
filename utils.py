@@ -1,4 +1,4 @@
-import ssl, smtplib, imghdr
+import ssl, smtplib, imghdr, os
 from functools import wraps
 from flask import render_template, request, session, redirect, url_for, current_app
 from string import ascii_uppercase, ascii_lowercase, punctuation, digits, ascii_letters
@@ -409,4 +409,17 @@ def find_punctuation_in_str(string):
             return True
         
     return False
+
+
+def clear_tmp_profile_dir():
+
+    folder_path = current_app.config['UPLOAD_FOLDER']
+    
+    for item in os.listdir(folder_path):
+        item_path = os.path.join(folder_path, item)
+
+        # Check if it's a file, and remove it
+        if os.path.isfile(item_path):
+            os.unlink(item_path)
+            os.remove(item_path)
 
