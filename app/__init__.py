@@ -5,7 +5,7 @@ import os
 lib_stores_db = SQL("sqlite:///lib_stores.db")
 
 def create_app():
-    print(os.path)
+    
     app = Flask(__name__)
     
     if app.root_path.endswith("/app"):
@@ -16,7 +16,7 @@ def create_app():
     app.config['MAX_CONTENT_LENGTH'] = 512 * 1024 * 1024
     print(app.root_path)
     print(tmp_root_path)
-    UPLOAD_FOLDER = os.path.join(tmp_root_path, 'app/', 'static/imgs/tmp_profile')
+    UPLOAD_FOLDER = os.path.join(tmp_root_path, 'static/imgs/tmp_profile')
     print(UPLOAD_FOLDER)
     
     # initialize upload folder
