@@ -20,7 +20,7 @@
                                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                             </button>
 
-                            <a href="/products/{{ product_info.id }}+{{ product_info.store_id }}">
+                            <a href="/products/{{ product_info.id }}+{{ product_info.store_id }}" class="slide_show_pictures_link_tag">
                                 <div class="carousel-inner product_pictures_slideshow_div">
                                     <div class="carousel-item active">
                                         <img src="data:image/png;base64,{{ product_id_and_photos[product_info.id][0]['picture'] }}" class="product_picture" alt="{{ product_info.name }}">

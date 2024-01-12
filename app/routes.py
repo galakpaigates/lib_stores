@@ -220,7 +220,16 @@ def sign_up_as_store():
             picture_data
         )
         
-        flash(message=("Store Registered!", "Success: You now have your Store on LIB Stores!",), category="success")
+        # replate all store profile pictures
+        # lib_stores_db.execute(
+        #     """
+        #         UPDATE stores 
+        #         SET profile_picture = ?;
+        #     """,
+        #     picture_data
+        # )
+        
+        flash(message=("Store Registered!", "Success: You now have your Store on LIB Stores!"), category="success")
         return redirect(url_for("index"))
         
     
@@ -506,7 +515,16 @@ def add_product():
                 just_added_product_id,
                 picture_data
             )
-
+        
+        # replate all product pictures
+        # lib_stores_db.execute(
+        #     """
+        #         UPDATE product_pictures 
+        #         SET picture = ?;
+        #     """,
+        #     picture_data_list[0]
+        # )
+        
         lib_stores_db.execute("COMMIT;")
 
         picture_data_list = []

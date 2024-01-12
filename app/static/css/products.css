@@ -46,8 +46,6 @@
 }
 
 #particular_product_more_photos_div img {
-    max-width: 23.75vw;
-    min-width: 10vw;
     object-fit: contain;
 }
 
@@ -94,10 +92,15 @@
         width: 70vw;
         margin-left: 15vw;
     }
+
+    #particular_product_more_photos_div img {
+        max-width: 23.75vw;
+        max-height: 10vw;
+    }
 }
 /* desktop only css ends here */
 
-/* desktop only css begins here */
+/* tablet only css begins here */
 @media only screen and (min-width: 992px) and (max-width: 1450px) {
     #particular_product_more_photos_div {
         justify-content: center;
@@ -118,7 +121,7 @@
         display: flex;
         flex-direction: column;
         gap: 1.5em;
-    }   
+    }
 
     #buy_product_form label {
         display: inline-flex;
@@ -135,8 +138,13 @@
         border-radius: 10%;
     }
 
+    #product_picture_preview_div img {
+        margin-bottom: 21px;
+    }
+
     #particular_product_more_photos_div img {
-        min-width: 46vw;
+        width: 46vw !important;
+        object-fit: contain;
     }
 }
 /* mobile only css ends here */
