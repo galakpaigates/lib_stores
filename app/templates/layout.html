@@ -61,6 +61,12 @@
 
             {% else %}
 
+                <ul class="navbar-nav mr-auto" id="store_product_latest_ul">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('all_routes.display_all_stores') }}">Stores</a>
+                    </li>
+                </ul>
+
                 <ul class="navbar-nav mr-auto" id="signup_login_ul">
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('all_routes.sign_up') }}">Sign Up</a>

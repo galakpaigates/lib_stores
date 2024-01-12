@@ -7,7 +7,6 @@ app = create_app()
 
 # display homepage
 @app.route("/")
-@login_required
 def index():
     
     # delete all the temporarily saved pictures

@@ -14,7 +14,6 @@ all_routes = Blueprint("all_routes", __name__)
 
 # display all stores
 @all_routes.route("/stores/")
-@login_required
 def display_all_stores():
     all_existing_stores = lib_stores_db.execute("SELECT * FROM stores ORDER BY RANDOM();")
     
@@ -26,7 +25,6 @@ def display_all_stores():
 
 
 @all_routes.route("/stores/<store_name_id>/")
-@login_required
 def dynamic_store(store_name_id):
     
     store_name, store_id = store_name_id.split("+")
