@@ -517,8 +517,10 @@ def add_product():
 
 
 @all_routes.route("/products/<product_id_and_store_id>/")
-@login_required
 def product_page(product_id_and_store_id):
+    
+    if session.get('current_user_info') is None:
+        flash(message=("Login / Sign Up Required to Purchase Item!", "Please login or sign up to purchase a product!"), category="warning")
 
     particular_product = lib_stores_db.execute(
         """
