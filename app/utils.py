@@ -415,8 +415,6 @@ def clear_tmp_profile_dir():
 
     folder_path = current_app.config['UPLOAD_FOLDER']
     
-    print(os.listdir(folder_path))
-    
     for item in os.listdir(folder_path):
         if item != "do_not_delete_me.txt":
             item_path = os.path.join(folder_path, item)
