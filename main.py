@@ -1,7 +1,7 @@
 from app import create_app, lib_stores_db
 import os, base64
 from flask import redirect, url_for, flash, render_template
-from app.utils import login_required, usd
+from app.utils import login_required, usd, clear_tmp_profile_dir
 
 app = create_app()
 
@@ -9,6 +9,9 @@ app = create_app()
 @app.route("/")
 @login_required
 def index():
+    
+    # delete all the temporarily saved pictures
+    clear_tmp_profile_dir()
     
     full_product_information = lib_stores_db.execute(
         """

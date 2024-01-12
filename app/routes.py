@@ -222,9 +222,6 @@ def sign_up_as_store():
             picture_data
         )
         
-        # remove image that was temporarily saved to upload to database
-        clear_tmp_profile_dir()
-        
         flash(message=("Store Registered!", "Success: You now have your Store on LIB Stores!",), category="success")
         return redirect(url_for("index"))
         
@@ -513,9 +510,6 @@ def add_product():
             )
 
         lib_stores_db.execute("COMMIT;")
-        
-        # delete all the temporarily saved pictures
-        clear_tmp_profile_dir()
 
         picture_data_list = []
         flash(message=("Product Added!", "Success: You have added a Product to your Store!"), category="success")
