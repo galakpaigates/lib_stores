@@ -12,17 +12,8 @@ def create_app():
     app.config['SESSION_TYPE'] = 'filesystem'
     app.config['MAX_CONTENT_LENGTH'] = 512 * 1024 * 1024
     
-    UPLOAD_FOLDER = os.path.join(app.root_path, 'static/imgs/tmp_profile')
-    
-    # handle double app at the beginning of the upload folder path
-    if UPLOAD_FOLDER.startswith("/app/app"):
-        print("changed")
-        UPLOAD_FOLDER = UPLOAD_FOLDER[len("/app"):]
-        
-    print(UPLOAD_FOLDER)
-    
     # initialize upload folder
-    app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+    app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, 'static/imgs/tmp_profile/')
 
     # register the routes created in routes.py
     from .routes import all_routes
