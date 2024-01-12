@@ -101,9 +101,12 @@
 
         <script>
             // click `See Modal` button to display flashed message if there are any and set the button to display none
-            flash_btn = document.getElementById("display_flashed_messages_modal_btn")
-            flash_btn.click();
-            flash_btn.remove();
+            document.addEventListener("DOMContentLoaded", () =>
+            {
+                flash_btn = document.getElementById("display_flashed_messages_modal_btn")
+                flash_btn.click()
+                flash_btn.remove();
+            });
         </script>
 
     {% endif %}
