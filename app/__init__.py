@@ -14,6 +14,13 @@ def create_app():
     
     UPLOAD_FOLDER = os.path.join(app.root_path, 'static/imgs/tmp_profile')
     
+    # handle double app at the beginning of the upload folder path
+    if UPLOAD_FOLDER.startswith("/app/app"):
+        print("changed")
+        UPLOAD_FOLDER = UPLOAD_FOLDER[len("/app"):]
+        
+    print(UPLOAD_FOLDER)
+    
     # initialize upload folder
     app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
