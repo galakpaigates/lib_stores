@@ -328,11 +328,13 @@ def login_as_store():
         if not check_password_hash(existing_store['password'], password):
             return refill_input_fields(sign_up_type="login_store", password_error="Incorrect password!")
         
+        print("Setting Session!")
         # store information in session to indicate the user is logged in
         session['current_user_info'] = {
             'id': existing_store['id'],
             'account_type': 'store'
         }
+        print("Session successfully set!")
         
         flash(message=("Successfully Logged In!", "Success: You have Logged In to your Store as Manager!",), category="success")
         return redirect(url_for("index"))
