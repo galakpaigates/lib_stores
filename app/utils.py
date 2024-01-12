@@ -418,9 +418,10 @@ def clear_tmp_profile_dir():
     print(os.listdir(folder_path))
     
     for item in os.listdir(folder_path):
-        item_path = os.path.join(folder_path, item)
+        if item != "do_not_delete_me.txt":
+            item_path = os.path.join(folder_path, item)
 
-        # Check if it's a file, and remove it
-        if os.path.isfile(item_path):
-            os.remove(item_path)
+            # Check if it's a file, and remove it
+            if os.path.isfile(item_path):
+                os.remove(item_path)
 
