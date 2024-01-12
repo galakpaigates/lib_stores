@@ -51,6 +51,10 @@
     object-fit: contain;
 }
 
+#particular_product_description_h3 {
+    color: var(--feldgrau) !important;
+}
+
 /* desktop only css begins here */
 @media only screen and (min-width: 992px) {
     #buy_product_form {
@@ -84,6 +88,11 @@
         max-height: 400px;
         border-radius: 5%;
         outline: 2px solid var(--dark-blue) outset;
+    }
+
+    #particular_product_description_h3 {
+        width: 70vw;
+        margin-left: 15vw;
     }
 }
 /* desktop only css ends here */

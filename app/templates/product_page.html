@@ -12,7 +12,7 @@
                 <img src="data:image/png;base64,{{ particular_product_photos[0]['picture'] }}" alt="{{ particular_product.name | title }}" id="store_profile_picture">
             </div>
             <div id="store_name_div">
-                <h1>{{ particular_product.name | title }}</h1>
+                <h1>{{ particular_product.name }}</h1>
                 <h2>{{ particular_product.price }}</h2>
                 <h3>
                     Owned by: 
@@ -27,7 +27,7 @@
 
         <h5>Product Description<h5>
 
-        <h3>
+        <h3 id="particular_product_description_h3">
             {{ particular_product.description }}
         <h3>
 
