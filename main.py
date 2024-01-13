@@ -1,6 +1,6 @@
 from app import create_app, lib_stores_db
 import os, base64
-from flask import redirect, url_for, flash, render_template
+from flask import redirect, url_for, flash, render_template, session
 from app.utils import usd, clear_tmp_profile_dir
 
 app = create_app()
@@ -8,6 +8,9 @@ app = create_app()
 # display homepage
 @app.route("/")
 def index():
+    
+    if session.get('current_user_info') is None:
+        flash(message=("Login / Sign Up Required to Access More Features!", "Please login or sign up to purchase a product and access other features!"), category="warning")
     
     # delete all the temporarily saved pictures
     clear_tmp_profile_dir()
