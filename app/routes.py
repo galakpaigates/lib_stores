@@ -230,7 +230,7 @@ def sign_up_as_store():
         # )
         
         flash(message=("Store Registered!", "Success: You now have your Store on LIB Stores!"), category="success")
-        return redirect(url_for("index"))
+        return redirect(url_for("all_routes.login"))
         
     
     return render_template("signup.html", as_store=True)
@@ -290,7 +290,7 @@ def sign_up_as_customer():
         )
         
         flash(message=("Account Registered!", "Success: You now have your LIB Stores Account as a Customer!",), category="success")
-        return redirect(url_for("index"))
+        return redirect(url_for("all_routes.login"))
     
     return render_template("signup.html", as_customer=True)
 

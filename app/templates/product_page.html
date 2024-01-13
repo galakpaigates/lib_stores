@@ -6,92 +6,78 @@
 
 {% block main %}
 
-    <div id="store_full_information_div">
-        <div id="store_home_page_header_div">
-            <div id="store_profile_picture_div">
-                <img src="data:image/png;base64,{{ particular_product_photos[0]['picture'] }}" alt="{{ particular_product.name | title }}" id="store_profile_picture">
+    <div id="product_full_information_div">
+        <div id="product_information_and_quantity_form_div">
+            <div id="store_home_page_header_div">
+                <div id="store_profile_picture_div">
+                    <img src="data:image/png;base64,{{ particular_product_photos[0]['picture'] }}" alt="{{ particular_product.name | title }}" id="store_profile_picture">
+                </div>
+                <div id="store_name_div">
+                    <h1>{{ particular_product.name }}</h1>
+                    <h2>{{ particular_product.price }}</h2>
+                    <h3>
+                        Owned by: 
+                        <a href="/stores/{{ store_name | replace(" ", "-") }}+{{ particular_product.store_id }}">
+                            {{ store_name | title }}
+                        </a>
+                    <h3>
+                </div>
             </div>
-            <div id="store_name_div">
-                <h1>{{ particular_product.name }}</h1>
-                <h2>{{ particular_product.price }}</h2>
-                <h3>
-                    Owned by: 
-                    <a href="/stores/{{ store_name | replace(" ", "-") }}+{{ particular_product.store_id }}">
-                        {{ store_name | title }}
-                    </a>
-                <h3>
-            </div>
+
+            <form method="POST" action="{{ url_for("all_routes.buy") }}" id="buy_product_form">
+                <label for="product_quantity_input">
+                    Quantity
+                </label>
+                
+                <input type="number" name="product_quantity" id="product_quantity_input" placeholder="Enter Product Quantity (10)" required step="any" aria-describedby="product_quantity_help" {% if product_quantity %}value="{{ product_quantity }}"{% endif %}>
+                <small id="product_quantity_help" class="form-text text-muted">How many of this product do you wish to purchase?</small>
+
+                <input type="hidden" name="product_id_and_store_id" value="{{ particular_product.id }}+{{ particular_product.store_id }}">
+                
+                {% if product_quantity_error %}
+                    <div class="invalid_feedback">
+                        {{ product_quantity_error }}
+                    </div>
+                {% endif %}
+
+                <button type="submit" id="purchase_btn">&dollar; Purchase</button>
+            </form>
+
+            <h5>Product Description<h5>
+
+            <h3 id="particular_product_description_h3">
+                {{ particular_product.description }}
+            <h3>    
         </div>
 
-        <br>
-
-        <h5>Product Description<h5>
-
-        <h3 id="particular_product_description_h3">
-            {{ particular_product.description }}
-        <h3>
-
-        <br>
-        <br>
-
-        <form method="POST" action="{{ url_for("all_routes.buy") }}" id="buy_product_form">
-            <label for="product_quantity_input">
-                Quantity
-            </label>
-            
-            <input type="number" name="product_quantity" id="product_quantity_input" placeholder="Enter Product Quantity (10)" required step="any" aria-describedby="product_quantity_help" {% if product_quantity %}value="{{ product_quantity }}"{% endif %}>
-            <small id="product_quantity_help" class="form-text text-muted">How many of this product do you wish to purchase?</small>
-
-            <input type="hidden" name="product_id_and_store_id" value="{{ particular_product.id }}+{{ particular_product.store_id }}">
-            
-            {% if product_quantity_error %}
-                <div class="invalid_feedback">
-                    {{ product_quantity_error }}
-                </div>
-            {% endif %}
-
-            <button type="submit" id="purchase_btn">&dollar; Purchase</button>
-        </form>
-
-        <br>
-        
-        <h3>More Photos</h3>
-        <br>
-        
-        <div></div>
-
         <div id="particular_product_more_photos_div">
-            <!--<div id="carouselExampleControls" class="carousel slide product_picture_div" data-bs-ride="carousel">
+            <div id="carouselExampleControls" class="carousel slide product_picture_div" data-bs-ride="carousel">
                 <button class="prev_pic" type="button">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                 </button>
 
-                <div class="carousel-inner product_pictures_slideshow_div">
-                    <div class="carousel-item active">
-                        <img src="data:image/png;base64,{{ particular_product_photos[0]['picture'] }}" class="d-block w-100 product_picture" alt="{{ particular_product.name }}">
+                <a class="slide_show_pictures_link_tag">
+                    <div class="carousel-inner product_pictures_slideshow_div">
+                        <div class="carousel-item active">
+                            <img src="data:image/png;base64,{{ particular_product_photos[0]['picture'] }}" class="product_picture" alt="{{ particular_product.name }}">
+                        </div>
+
+                        {% for picture_data in particular_product_photos %}
+                            {% if loop.index != 1 %}
+                            
+                                <div class="carousel-item">
+                                    <img src="data:image/png;base64,{{ picture_data['picture'] }}" class="product_picture" alt="{{ particular_product.name }}">
+                                </div>
+
+                            {% endif %}
+                        {% endfor %}
                     </div>
-
-                    {% for picture_data in particular_product_photos %}
-                        {% if loop.index != 1 %}
-                        
-                            <div class="carousel-item">
-                                <img src="data:image/png;base64,{{ picture_data['picture'] }}" class="d-block w-100 product_picture" alt="{{ particular_product_photos.name }}">
-                            </div>
-
-                        {% endif %}
-                    {% endfor %}
-                </div>
+                </a>
 
                 <button class="next_pic" type="button">
                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                 </button>
-            </div>-->
-
-            {% for picture_data in particular_product_photos %}
-            
-                <img src="data:image/png;base64,{{ picture_data['picture'] }}" alt="{{ particular_product_photos.name }}">
-                
-            {% endfor %}
+            </div>-
         </div>
     </div>
 

@@ -1,3 +1,57 @@
+#product_full_information_div {
+    display: flex;
+    flex-direction: row;
+    height: 81vh;
+    width: 100vw;
+    position: fixed;
+}
+
+#product_information_and_quantity_form_div {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    width: 35vw;
+    height: 100vh;
+    margin-top: -10vh;
+    background-color: var(--platinum);
+}
+
+#particular_product_more_photos_div {
+    display: flex;
+    justify-content: center;
+    flex: 1;
+    height: 89.5vh;
+    width: 100%;
+    margin-top: -2.75vh;
+}
+
+#particular_product_more_photos_div img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+#particular_product_more_photos_div .slide_show_pictures_link_tag {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+#particular_product_more_photos_div .product_picture_div {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    background-color: unset;
+}
+
+#particular_product_more_photos_div .carousel-inner {
+    width: 100%;
+    height: 100%;
+    display: flex;
+}
+
 #purchase_btn {
     background-color: limegreen;
     color: white;
@@ -6,6 +60,7 @@
     font-weight: 1000;
     font-size: 22px;
     cursor: pointer;
+    margin-bottom: 15px;
 }
 
 #purchase_btn:hover {
@@ -25,28 +80,10 @@
     display: block !important;
 }
 
-#product_picture_preview_div {
-    gap: 0.25em;
-}
-
 .product_picture_preview {
     border-radius: 15%;
     overflow: auto;
     object-fit: cover;
-}
-
-#particular_product_more_photos_div {
-    width: 96vw;
-    margin-left: 2vw;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.4em;
-}
-
-#particular_product_more_photos_div img {
-    object-fit: contain;
 }
 
 #particular_product_description_h3 {
@@ -56,8 +93,8 @@
 /* desktop only css begins here */
 @media only screen and (min-width: 992px) {
     #buy_product_form {
-        width: 30vw;
-        margin-left: 35vw;
+        width: 80%;
+        margin-left: 10%;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -89,38 +126,36 @@
     }
 
     #particular_product_description_h3 {
-        width: 70vw;
-        margin-left: 15vw;
-    }
-
-    #particular_product_more_photos_div img {
-        max-width: 23.75vw;
-        max-height: 10vw;
-    }
-}
-/* desktop only css ends here */
-
-/* tablet only css begins here */
-@media only screen and (min-width: 992px) and (max-width: 1450px) {
-    #particular_product_more_photos_div {
-        justify-content: center;
-        gap: 2.5vw;
-    }
-    
-    #particular_product_more_photos_div img {
-        min-width: 350px;
+        width: 70%;
+        margin-left: 15%;
     }
 }
 /* desktop only css ends here */
 
 /* mobile only css begins here */
 @media only screen and (max-width: 991.9px) {
+    #product_full_information_div {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+    }
+
+    #product_information_and_quantity_form_div {
+        width: 100vw;
+        margin-top: 1em;
+    }
+
     #buy_product_form {
         width: 90vw;
         margin-left: 5vw;
         display: flex;
         flex-direction: column;
         gap: 1.5em;
+    }
+
+    #particular_product_more_photos_div {
+        margin: 1.5em 0 5em 0.25em;
+        width: 100vw;
     }
 
     #buy_product_form label {
@@ -140,11 +175,6 @@
 
     #product_picture_preview_div img {
         margin-bottom: 21px;
-    }
-
-    #particular_product_more_photos_div img {
-        width: 46vw !important;
-        object-fit: contain;
     }
 }
 /* mobile only css ends here */

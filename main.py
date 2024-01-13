@@ -1,7 +1,7 @@
 from app import create_app, lib_stores_db
 import os, base64
 from flask import redirect, url_for, flash, render_template
-from app.utils import login_required, usd, clear_tmp_profile_dir
+from app.utils import usd, clear_tmp_profile_dir
 
 app = create_app()
 
@@ -62,4 +62,4 @@ def internal_server_error(error):
 
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=int(os.getenv("PORT", default=5000)))
+    app.run(debug=False, host="0.0.0.0", port=int(os.getenv("PORT", default=5000)))

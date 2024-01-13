@@ -17,8 +17,8 @@
     align-items: center;
     justify-content: flex-end;
     overflow: hidden;
-    transition: all 0.1s;
     cursor: pointer;
+    transition: all 0.15s;
 }
 
 .product_picture_div {
@@ -120,6 +120,7 @@
     .each_product_div:hover {
         width: 20rem;
         height: 30rem;
+        box-shadow: 0 0 5px var(--feldgrau);
     }
 }
 /* desktop only css ends here */
