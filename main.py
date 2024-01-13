@@ -9,8 +9,11 @@ app = create_app()
 @app.route("/")
 def index():
     
+    # inform user to login or register to access more features
     if session.get('current_user_info') is None:
-        flash(message=("Login / Sign Up Required to Access More Features!", "Please login or sign up to purchase a product and access other features!"), category="warning")
+        if session.get("login_required_message_shown") is None:
+            session['login_required_message_shown'] = True
+            flash(message=("Login / Sign Up Required to Access More Features!", "Please login or sign up to purchase a product and access other features!"), category="warning")
     
     # delete all the temporarily saved pictures
     clear_tmp_profile_dir()
@@ -65,4 +68,4 @@ def internal_server_error(error):
 
 
 if __name__ == "__main__":
-    app.run(debug=False, host="0.0.0.0", port=int(os.getenv("PORT", default=5000)))
+    app.run(debug=True, host="0.0.0.0", port=int(os.getenv("PORT", default=5000)))
