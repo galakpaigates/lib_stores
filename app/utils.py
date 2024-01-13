@@ -1,14 +1,8 @@
 import ssl, smtplib, imghdr, os
-from googlevoice import Voice
 from functools import wraps
 from flask import render_template, request, session, redirect, url_for, current_app
 from string import ascii_uppercase, ascii_lowercase, punctuation, digits, ascii_letters
 from email.message import EmailMessage
-import asyncio
-import re
-from email.message import EmailMessage
-from typing import Collection, List, Tuple, Union
-import aiosmtplib
 
 MAIL_ADDR = "galakpaigates@gmail.com"
 APP_PASSWORD = "hmxg bqpk qqfd xhps"
