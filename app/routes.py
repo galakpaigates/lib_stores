@@ -229,6 +229,7 @@ def sign_up_as_store():
         #     picture_data
         # )
         
+        send_registered_email(email=email, user_name=store_name, account_type="Store")
         flash(message=("Store Registered!", "Success: You now have your Store on LIB Stores!"), category="success")
         return redirect(url_for("all_routes.login"))
         
@@ -289,7 +290,8 @@ def sign_up_as_customer():
             datetime.now().strftime("%d-%m-%Y %H:%M")
         )
         
-        flash(message=("Account Registered!", "Success: You now have your LIB Stores Account as a Customer!",), category="success")
+        send_registered_email(email=email, user_name=full_name, account_type="Customer")
+        flash(message=("Customer Account Registered!", "Success: You now have your LIB Stores Account as a Customer!",), category="success")
         return redirect(url_for("all_routes.login"))
     
     return render_template("signup.html", as_customer=True)
@@ -580,6 +582,8 @@ def product_page(product_id_and_store_id):
 @login_required
 def buy():
     product_quantity = request.form.get("product_quantity")
+    delivery_address = request.form.get("delivery_address")
+    contact_number = request.form.get("contact_number")
     product_id_and_store_id = request.form.get("product_id_and_store_id")
     
     # make sure the store id and product id were not tampered with by inspecting the html
@@ -599,6 +603,17 @@ def buy():
     if not validate_product_quantity(product_quantity):
         flash(message=("Invalid Quantity!", "Product quantity must be a positive interger without decimal! e.g. 10 or 7 or 123"), category="danger")
         return redirect(request.headers.get("Referer"))
+    
+    # validate delivery address
+    if not validate_delivery_address(delivery_address):
+        flash(message=("Invalid Delivery Address!", "Delivery Address must be descriptive and exact so the person doing the delivery does not face difficulty delivering the product!"), category="danger")
+        return redirect(request.headers.get("Referer"))
+    
+    # validate delivery address
+    if not validate_contact_number(contact_number):
+        flash(message=("Invalid Contact Number!", "Please enter a valid Liberian Phone Number so the delivery person can keep in touch incase of address issue for direction! e.g. 0775326934 or +231555943559 or 0888061282"), category="danger")
+        return redirect(request.headers.get("Referer"))
+    
     
     # reduce the quantity of that particular product in the database by the amount bought
     current_product_info = lib_stores_db.execute(
@@ -675,8 +690,8 @@ def buy():
     product_name = current_product_info[0]['name']
     
     # send email to the store as a purchase request
-    send_email(store_email=store_email, buyer_name=buyer_name, product_name=product_name, quantity=int(product_quantity), price=price)
+    send_email(store_email=store_email, buyer_name=buyer_name, product_name=product_name, quantity=int(product_quantity), price=price, buyer_contact_number=contact_number)
     
-    flash(message=("Product Purchased!", "Success: You have purchased the product!"), category="success")
+    flash(message=("Purchase Request Sent!", "The purchase request has been sent to the store, the product will be delivered to the address you entered!"), category="success")
     return redirect(url_for("index"))
 

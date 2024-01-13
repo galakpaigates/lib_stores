@@ -14,7 +14,7 @@
                 </div>
                 <div id="store_name_div">
                     <h1>{{ particular_product.name }}</h1>
-                    <h2>{{ particular_product.price }}</h2>
+                    <h2>{{ particular_product.price }} &bull; {{ particular_product.quantity }} in stock</h2>
                     <h3>
                         Owned by: 
                         <a href="/stores/{{ store_name | replace(" ", "-") }}+{{ particular_product.store_id }}">
@@ -29,8 +29,14 @@
                     Quantity
                 </label>
                 
-                <input type="number" name="product_quantity" id="product_quantity_input" placeholder="Enter Product Quantity (10)" required step="any" aria-describedby="product_quantity_help" {% if product_quantity %}value="{{ product_quantity }}"{% endif %}>
+                <input type="number" name="product_quantity" id="product_quantity_input" placeholder="Enter Product Quantity (10)" required step="any" aria-describedby="product_quantity_help">
                 <small id="product_quantity_help" class="form-text text-muted">How many of this product do you wish to purchase?</small>
+
+                <input type="text" name="delivery_address" id="delivery_address_input" placeholder="Enter Delivery Address" required aria-describedby="delivery_address_help">
+                <small id="delivery_address_help" class="form-text text-muted">Where do you want this product to be delivered?</small>
+
+                <input type="tel" name="contact_number" id="contact_number_input" placeholder="Enter Contact Number" required aria-describedby="contact_number_help">
+                <small id="contact_number_help" class="form-text text-muted">Enter the contact number that will be used to contact you incase of misdirection or delivery issue?</small>
 
                 <input type="hidden" name="product_id_and_store_id" value="{{ particular_product.id }}+{{ particular_product.store_id }}">
                 

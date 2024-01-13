@@ -369,7 +369,7 @@ def usd(value):
     return f"${value:,.2f}"
 
 
-def send_email(store_email, buyer_name, product_name, quantity, price):
+def send_email(store_email, buyer_name, product_name, quantity, price, buyer_contact_number):
 
     # create email header and content
     message = EmailMessage()
@@ -383,6 +383,7 @@ def send_email(store_email, buyer_name, product_name, quantity, price):
                 </h3>
                 <h4>
                     Total = ${price * quantity:.2f}
+                    Contact Number: {buyer_contact_number}
                 </h4>
             </body>
         </html>
@@ -401,6 +402,40 @@ def send_email(store_email, buyer_name, product_name, quantity, price):
     with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
         server.login(user=MAIL_ADDR, password=APP_PASSWORD)
         server.sendmail(from_addr=MAIL_ADDR, to_addrs=store_email, msg=message.as_string())
+        
+        
+def send_registered_email(email, user_name, account_type):
+
+    # create email header and content
+    message = EmailMessage()
+    
+    html = f"""
+        <html>
+            <body>
+                <h2>{account_type} Account Created!</h2>
+                <h3>
+                    You have successfully created a customer account on LIB Stores as {user_name}.
+                </h3>
+                <h4>
+                    Now you can see more products in many stores and purchase from the confort zone.
+                </h4>
+            </body>
+        </html>
+    """
+
+    message["To"] = email
+    message["From"] = MAIL_ADDR
+    message["Subject"] = f"{account_type} Account Created!"
+    
+    message.add_alternative(html, subtype="html")
+
+    # create a ssl context to make sure the mail transfer is secure
+    context = ssl.create_default_context()
+
+    # use gmail server to do the mail transfer
+    with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
+        server.login(user=MAIL_ADDR, password=APP_PASSWORD)
+        server.sendmail(from_addr=MAIL_ADDR, to_addrs=email, msg=message.as_string())
 
 
 def find_punctuation_in_str(string):
@@ -422,4 +457,12 @@ def clear_tmp_profile_dir():
             # Check if it's a file, and remove it
             if os.path.isfile(item_path):
                 os.remove(item_path)
+
+
+def validate_delivery_address(address):
+    
+    if address is None or address.count(",") < 3 or len(address) < 21:
+        return False
+    
+    return True
 
