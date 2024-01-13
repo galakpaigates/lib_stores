@@ -649,7 +649,7 @@ def buy():
     
     # ensure there is enough available product to purchase
     if current_product_quantity < 0:
-        flash(message=("Not enough product", f"The quantity of product available for sale is less than what you've ordered! ({current_product_quantity + int(product_quantity)} is currently available for sale!)"), category="danger")
+        flash(message=("Not enough product", f"The quantity of product available for sale is less than what you've ordered! ({current_product_quantity + int(product_quantity)} currently available for sale!)"), category="danger")
         return redirect(request.headers.get("Referer"))
     
     lib_stores_db.execute(

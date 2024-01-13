@@ -3,6 +3,7 @@ from functools import wraps
 from flask import render_template, request, session, redirect, url_for, current_app
 from string import ascii_uppercase, ascii_lowercase, punctuation, digits, ascii_letters
 from email.message import EmailMessage
+from twilio.rest import Client
 
 MAIL_ADDR = "galakpaigates@gmail.com"
 APP_PASSWORD = "hmxg bqpk qqfd xhps"
@@ -499,7 +500,7 @@ def send_purchase_email(phone_number, store_name, quantity, price, product_name,
             <body>
                 <h2>Successful Purchase Request</h2>
                 <h3>
-                    You've made a purchase request to {store_name} to purchase {quantity} {product_name} (cost {price:.2f})
+                    You've made a purchase request to {store_name} to purchase {quantity} {product_name} (cost ${price:.2f})
                 </h3>
                 <h3>
                     Total = ${price * quantity:.2f}
@@ -532,4 +533,47 @@ def send_purchase_email(phone_number, store_name, quantity, price, product_name,
 
 def format_phone_number(phone_number):
     return "+231" + phone_number
+
+
+def send_purchase_request_sms(phone_number, store_name, quantity, price, product_name, address, email):
+        
+    phone_number = format_phone_number(clean_phone_number(phone_number))
+        
+    # create email header and content
+    message = EmailMessage()
+    
+    html = f"""
+        <html>
+            <body>
+                <h2>Successful Purchase Request</h2>
+                <h3>
+                    You've made a purchase request to {store_name} to purchase {quantity} {product_name} (cost {price:.2f})
+                </h3>
+                <h3>
+                    Total = ${price * quantity:.2f}
+                    <br>
+                    The product will be delivered at: {address}
+                    <br>
+                    {phone_number} will be used incase of misdirection or delivery issue.
+                </h3>
+                <h4>
+                    Thanks for using LIB Stores!
+                </h4>
+            </body>
+        </html>
+    """
+    
+    # Find your Account SID and Auth Token at twilio.com/console
+    # and set the environment variables. See http://twil.io/secure
+    account_sid = os.environ['TWILIO_ACCOUNT_SID']
+    auth_token = os.environ['TWILIO_AUTH_TOKEN']
+    client = Client(account_sid, auth_token)
+
+    message = client.messages.create(
+            body ='Hello from your Messaging Service!',
+            messaging_service_sid ='MG9752274e9e519418a7406176694466fa',
+            to ='+15553332222'
+        )
+
+    print(message.sid)
 
