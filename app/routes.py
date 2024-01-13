@@ -261,6 +261,16 @@ def sign_up_as_customer():
         # ensure it's a valid Lonestar number
         elif not validate_mobile_money_number(mobile_money_number):
             return refill_input_fields(sign_up_type="customer", mobile_money_number_error="Invalid mobile money number! Please enter a valid Lonestar Cell MTN number!  e.g. 0888061282 or +231555943559")
+        
+        # ensure the account number does not already exist
+        elif len(lib_stores_db.execute(
+            """
+                SELECT mobile_money_number FROM customers
+                WHERE mobile_money_number = ?;
+            """,
+            mobile_money_number
+        )) >= 1:
+            return refill_input_fields(sign_up_type="customer", mobile_money_number_error="This mobile money account number already exists!")
 
         # ensure password is atleast 12 characters long and has punc, upper, lower and int
         elif not validate_password(password):
@@ -584,7 +594,7 @@ def buy():
     product_quantity = request.form.get("product_quantity")
     delivery_address = request.form.get("delivery_address")
     contact_number = request.form.get("contact_number")
-    product_id_and_store_id = request.form.get("product_id_and_store_id")
+    product_id_and_store_id = request.form.get("info")
     
     # make sure the store id and product id were not tampered with by inspecting the html
     if product_id_and_store_id is None or "+" not in product_id_and_store_id:
@@ -658,39 +668,42 @@ def buy():
     # send an email to the store informing them about the purchase request
     
     # get the email address to send the purchase request to
-    store_email = lib_stores_db.execute(
+    store_info = lib_stores_db.execute(
         """
-            SELECT email FROM stores
+            SELECT * FROM stores
             WHERE id = ?
         """,
         store_id
-    )[0]['email']
+    )[0]
     
     # get the name of the buyer from the session    
     if session["current_user_info"]["account_type"] == "customer":
-        buyer_name = lib_stores_db.execute(
+        buyer_info = lib_stores_db.execute(
             """
-                SELECT name FROM customers
+                SELECT * FROM customers
                 WHERE id = ?;
             """,
             session["current_user_info"]['id']
-        )[0]['name']
+        )[0]
         
     else:
-        buyer_name = lib_stores_db.execute(
+        buyer_info = lib_stores_db.execute(
             """
-                SELECT name FROM stores
+                SELECT * FROM stores
                 WHERE id = ?;
             """,
             session["current_user_info"]["id"]
-        )[0]['name']
+        )[0]
         
     # get the price and name of the product to be purchased
     price = float(current_product_info[0]['price'])
     product_name = current_product_info[0]['name']
     
     # send email to the store as a purchase request
-    send_email(store_email=store_email, buyer_name=buyer_name, product_name=product_name, quantity=int(product_quantity), price=price, buyer_contact_number=contact_number)
+    send_email(store_email=store_info['email'], buyer_name=buyer_info['name'], product_name=product_name, quantity=int(product_quantity), price=price, buyer_contact_number=contact_number)
+
+    # send text message to the phone number that made the order
+    send_purchase_email(contact_number, store_info['name'], int(product_quantity), price, product_name, delivery_address, email=buyer_info['email'])
     
     flash(message=("Purchase Request Sent!", "The purchase request has been sent to the store, the product will be delivered to the address you entered!"), category="success")
     return redirect(url_for("index"))

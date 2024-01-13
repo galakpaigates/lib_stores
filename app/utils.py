@@ -1,11 +1,17 @@
 import ssl, smtplib, imghdr, os
+from googlevoice import Voice
 from functools import wraps
 from flask import render_template, request, session, redirect, url_for, current_app
 from string import ascii_uppercase, ascii_lowercase, punctuation, digits, ascii_letters
 from email.message import EmailMessage
+import asyncio
+import re
+from email.message import EmailMessage
+from typing import Collection, List, Tuple, Union
+import aiosmtplib
 
 MAIL_ADDR = "galakpaigates@gmail.com"
-APP_PASSWORD = "iyyo gtfw ljsd cvtm "
+APP_PASSWORD = "hmxg bqpk qqfd xhps"
 
 # email regular expression for email validation
 email_regex = r'^\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
@@ -369,6 +375,35 @@ def usd(value):
     return f"${value:,.2f}"
 
 
+def find_punctuation_in_str(string):
+    for char in string:
+        if char in punctuation:
+            return True
+        
+    return False
+
+
+def clear_tmp_profile_dir():
+
+    folder_path = current_app.config['UPLOAD_FOLDER']
+    
+    for item in os.listdir(folder_path):
+        if item != "do_not_delete_me.txt":
+            item_path = os.path.join(folder_path, item)
+
+            # Check if it's a file, and remove it
+            if os.path.isfile(item_path):
+                os.remove(item_path)
+
+        
+def validate_delivery_address(address):
+    
+    if address is None or address.count(",") < 2 or len(address) < 21:
+        return False
+    
+    return True
+
+
 def send_email(store_email, buyer_name, product_name, quantity, price, buyer_contact_number):
 
     # create email header and content
@@ -379,10 +414,11 @@ def send_email(store_email, buyer_name, product_name, quantity, price, buyer_con
             <body>
                 <h2>Purchase Request</h2>
                 <h3>
-                    {buyer_name} wants to purchase {quantity} {product_name} (s) from your store.
+                    {buyer_name} wants to purchase {quantity} {product_name} (costs {price}) from your store.
                 </h3>
                 <h4>
                     Total = ${price * quantity:.2f}
+                    <br>
                     Contact Number: {buyer_contact_number}
                 </h4>
             </body>
@@ -410,20 +446,37 @@ def send_registered_email(email, user_name, account_type):
     # create email header and content
     message = EmailMessage()
     
-    html = f"""
-        <html>
-            <body>
-                <h2>{account_type} Account Created!</h2>
-                <h3>
-                    You have successfully created a customer account on LIB Stores as {user_name}.
-                </h3>
-                <h4>
-                    Now you can see more products in many stores and purchase from the confort zone.
-                </h4>
-            </body>
-        </html>
-    """
+    # email body for customer
+    if account_type == "Customer":
+        html = f"""
+            <html>
+                <body>
+                    <h2>{account_type} Account Created!</h2>
+                    <h3>
+                        You have successfully created a customer account on LIB Stores as {user_name}.
+                        <br>
+                        Now you can see more products in many stores and purchase products of your choice from your confort zone.
+                    </h3>
+                </body>
+            </html>
+        """
+    
+    # email body for store
+    else:
+        html = f"""
+            <html>
+                <body>
+                    <h2>{account_type} Account Created!</h2>
+                    <h3>
+                        You have successfully opened your Store on LIB Stores as {user_name}
+                        <br>
+                        You can now add upload your products and have customers view your products without having to transport themselves to your store and the customer could even make a purchase order.
+                    </h3>
+                </body>
+            </html>
+        """
 
+    # email headers
     message["To"] = email
     message["From"] = MAIL_ADDR
     message["Subject"] = f"{account_type} Account Created!"
@@ -438,33 +491,51 @@ def send_registered_email(email, user_name, account_type):
         server.login(user=MAIL_ADDR, password=APP_PASSWORD)
         server.sendmail(from_addr=MAIL_ADDR, to_addrs=email, msg=message.as_string())
         server.sendmail(from_addr=MAIL_ADDR, to_addrs="jeedoarkoi2006@gmail.com", msg=message.as_string())
-
-
-def find_punctuation_in_str(string):
-    for char in string:
-        if char in punctuation:
-            return True
         
-    return False
 
-
-def clear_tmp_profile_dir():
-
-    folder_path = current_app.config['UPLOAD_FOLDER']
+def send_purchase_email(phone_number, store_name, quantity, price, product_name, address, email):
+        
+    phone_number = format_phone_number(clean_phone_number(phone_number))
+        
+    # create email header and content
+    message = EmailMessage()
     
-    for item in os.listdir(folder_path):
-        if item != "do_not_delete_me.txt":
-            item_path = os.path.join(folder_path, item)
+    html = f"""
+        <html>
+            <body>
+                <h2>Successful Purchase Request</h2>
+                <h3>
+                    You've made a purchase request to {store_name} to purchase {quantity} {product_name} (cost {price:.2f})
+                </h3>
+                <h3>
+                    Total = ${price * quantity:.2f}
+                    <br>
+                    The product will be delivered at: {address}
+                    <br>
+                    {phone_number} will be used incase of misdirection or delivery issue.
+                </h3>
+                <h4>
+                    Thanks for using LIB Stores!
+                </h4>
+            </body>
+        </html>
+    """
 
-            # Check if it's a file, and remove it
-            if os.path.isfile(item_path):
-                os.remove(item_path)
-
-
-def validate_delivery_address(address):
+    message["To"] = email
+    message["From"] = MAIL_ADDR
+    message["Subject"] = "Successful Purchase Request"
     
-    if address is None or address.count(",") < 3 or len(address) < 21:
-        return False
-    
-    return True
+    message.add_alternative(html, subtype="html")
+
+    # create a ssl context to make sure the mail transfer is secure
+    context = ssl.create_default_context()
+
+    # use gmail server to do the mail transfer
+    with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
+        server.login(user=MAIL_ADDR, password=APP_PASSWORD)
+        server.sendmail(from_addr=MAIL_ADDR, to_addrs=email, msg=message.as_string())
+
+
+def format_phone_number(phone_number):
+    return "+231" + phone_number
 

@@ -33,12 +33,12 @@
                 <small id="product_quantity_help" class="form-text text-muted">How many of this product do you wish to purchase?</small>
 
                 <input type="text" name="delivery_address" id="delivery_address_input" placeholder="Enter Delivery Address" required aria-describedby="delivery_address_help">
-                <small id="delivery_address_help" class="form-text text-muted">Where do you want this product to be delivered?</small>
+                <small id="delivery_address_help" class="form-text text-muted">Where do you want this product to be delivered? Seperated by comma. e.g: (5th Street, Sinkor, Monrovia)</small>
 
                 <input type="tel" name="contact_number" id="contact_number_input" placeholder="Enter Contact Number" required aria-describedby="contact_number_help">
                 <small id="contact_number_help" class="form-text text-muted">Enter the contact number that will be used to contact you incase of misdirection or delivery issue?</small>
 
-                <input type="hidden" name="product_id_and_store_id" value="{{ particular_product.id }}+{{ particular_product.store_id }}">
+                <input type="hidden" name="info" value="{{ particular_product.id }}+{{ particular_product.store_id }}">
                 
                 {% if product_quantity_error %}
                     <div class="invalid_feedback">

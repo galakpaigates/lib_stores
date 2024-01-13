@@ -12,7 +12,7 @@
     flex-direction: column;
     width: 35vw;
     height: 100vh;
-    margin-top: -10vh;
+    margin-top: -8em;
     background-color: var(--platinum);
 }
 
@@ -20,9 +20,9 @@
     display: flex;
     justify-content: center;
     flex: 1;
-    height: 89.5vh;
+    height: 88vh;
     width: 100%;
-    margin-top: -2.75vh;
+    margin-top: -1.9em;
 }
 
 #particular_product_more_photos_div img {
