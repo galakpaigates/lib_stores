@@ -1,28 +1,49 @@
 #product_full_information_div {
     display: flex;
     flex-direction: row;
-    height: 81vh;
     width: 100vw;
-    position: fixed;
+    align-items: flex-start;
 }
 
 #product_information_and_quantity_form_div {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     flex-direction: column;
     width: 35vw;
     height: 100vh;
-    margin-top: -8em;
+    padding-top: 1em;
     background-color: var(--platinum);
 }
 
-#particular_product_more_photos_div {
+#product_information_and_quantity_form_div #store_home_page_header_div {
     display: flex;
-    justify-content: center;
-    flex: 1;
-    height: 88vh;
-    width: 100%;
-    margin-top: -1.9em;
+    align-items: center;
+    margin-top: 0;
+    padding: 1vh 0;
+}
+
+#product_information_and_quantity_form_div #store_profile_picture_div {
+    width: 35%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: right;
+}
+
+#product_information_and_quantity_form_div #store_name_div {
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    align-items: left;
+}
+
+#store_name_div h1,
+#store_name_div h2,
+#store_name_div h3 {
+    padding: 2.5px 7px;
+    display: flex;
+    align-items: left !important;
+    margin: 0 7px;
 }
 
 #particular_product_more_photos_div img {
@@ -88,12 +109,28 @@
     object-fit: cover;
 }
 
-#particular_product_description_h3 {
+#particular_product_description_h5 {
     color: var(--feldgrau) !important;
+}
+
+#buy_product_form small {
+    width: 100%;
+    text-align: left;
 }
 
 /* desktop only css begins here */
 @media only screen and (min-width: 992px) {
+    #particular_product_more_photos_div {
+        position: fixed;
+        display: flex;
+        justify-content: center;
+        flex: 1;
+        height: 88vh;
+        width: 65vw;
+        right: 0;
+        margin-top: 1vh;
+    }
+
     #buy_product_form {
         width: 80%;
         margin-left: 10%;
@@ -129,9 +166,11 @@
         outline: 2px solid var(--dark-blue) outset;
     }
 
-    #particular_product_description_h3 {
-        width: 70%;
-        margin-left: 15%;
+    #product_information_and_quantity_form_div h5 {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
     }
 }
 /* desktop only css ends here */
@@ -141,12 +180,65 @@
     #product_full_information_div {
         display: flex;
         flex-direction: column;
+        width: 100vw;
+        align-items: flex-start !important;
+    }
+
+    #product_information_and_quantity_form_div {
+        height: fit-content;
+    }
+
+    #product_information_and_quantity_form_div #store_home_page_header_div {
+        display: flex;
+        margin-top: 0;
+        padding: 1vh 0;
+        width: 100vw;
+    }
+    
+    #product_information_and_quantity_form_div #store_profile_picture_div {
+        width: 35%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+    }
+    
+    #product_information_and_quantity_form_div #store_name_div {
+        display: flex;
+        flex-direction: column;
+        justify-content: left;
+        align-items: left;
+    }
+
+    #product_information_and_quantity_form_div h5 {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+    }
+
+    #product_information_and_quantity_form_div a {
+        text-decoration: underline;
+        padding-left: 3px;
+    }
+    
+    #store_name_div h1,
+    #store_name_div h2,
+    #store_name_div h3 {
+        padding: 2.5px 7px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 7px;
+    }
+
+    #product_full_information_div {
+        display: flex;
+        flex-direction: column;
         position: relative;
     }
 
     #product_information_and_quantity_form_div {
         width: 100vw;
-        margin-top: 7em;
     }
 
     #buy_product_form {
@@ -154,17 +246,16 @@
         margin-left: 5vw;
         display: flex;
         flex-direction: column;
-        gap: 1.5em;
+        gap: 0.25em;
     }
 
     #particular_product_more_photos_div {
-        margin: 7em 0 5em 0.25em;
-        width: 98vw;
+        margin: 0 0 0 0.25em;
+        width: 98.5vw;
     }
 
     #buy_product_form label {
         display: inline-flex;
-        margin-bottom: -0.75em;
         font-size: 23px;
     }
 
@@ -179,6 +270,11 @@
 
     #product_picture_preview_div img {
         margin-bottom: 21px;
+    }
+
+    #particular_product_description_h5 {
+        display: flex;
+        justify-content: center;
     }
 }
 /* mobile only css ends here */

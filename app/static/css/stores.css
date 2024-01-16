@@ -2,6 +2,7 @@
 #existing_stores_div {
     max-width: 70vw;
     margin: 3em 0 0 15vw;
+    padding-top: 1.5em;
 }
 
 .each_existing_store_div {
@@ -24,13 +25,13 @@
     width: 8em;
     height: 8em;
     object-fit: cover;
+    overflow: hidden;
     border-radius: 50%;
 }
 
 #store_home_page_header_div {
     display: flex;
     background-color: var(--platinum);
-    margin-top: -5vh;
     padding: 3vh 0;
 }
 
@@ -41,6 +42,10 @@
 
 #store_name_div {
     flex: 1 0 60%;
+    display: flex;
+    align-items: left;
+    justify-content: center;
+    flex-direction: column;
 }
 
 #store_name_div h1 {
@@ -64,10 +69,19 @@
 }
 
 #store_profile_picture {
-    width: 12rem;
-    height: 12rem;
+    width: 10.5rem;
+    height: 10.5rem;
     border-radius: 50%;
+    overflow: hidden;
     object-fit: cover;
+    padding-left: 5px;
+}
+
+@media only screen and (min-width: 992px) and (max-width: 1680px) {
+    #store_profile_picture {
+        width: 7.5rem;
+        height: 7.5rem;
+    }
 }
 
 #tab_btns_div {
@@ -88,6 +102,13 @@
     padding: 0.2em;
     font-size: 21px;
     font-weight: 1000;
+}
+
+#patricular_store_products_li {
+    margin-left: -10vw;
+    width: 120% !important;
+    display: flex;
+    justify-content: center;
 }
 /* all screen css ends here */
 
@@ -166,6 +187,10 @@
     .each_existing_store_div_title h3 {
         text-align: left;
         align-self: center;
+    }
+
+    #patricular_store_products_li {
+        margin-left: 0;
     }
 }
 /* mobile only css ends here */

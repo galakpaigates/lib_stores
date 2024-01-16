@@ -156,3 +156,19 @@ function prev_picture(particular_product)
         }
     }
 }
+
+document.addEventListener("DOMContentLoaded", () => 
+{
+    
+    navbar_height = document.getElementById("navbar").offsetHeight;
+    console.log(navbar_height)
+    document.querySelector("main").style.marginTop = navbar_height + "px";
+
+    try
+    {
+        flash_btn = document.getElementById("display_flashed_messages_modal_btn")
+        flash_btn.click()
+        flash_btn.remove();
+    }
+    catch { /* pass */ }
+});

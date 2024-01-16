@@ -20,13 +20,13 @@
                         <a href="/stores/{{ store_name | replace(" ", "-") }}+{{ particular_product.store_id }}">
                             {{ store_name | title }}
                         </a>
-                    <h3>
+                    </h3>
                 </div>
             </div>
 
             <form method="POST" action="{{ url_for("all_routes.buy") }}" id="buy_product_form">
                 <label for="product_quantity_input">
-                    Quantity
+                    Purchase Info
                 </label>
                 
                 <input type="number" name="product_quantity" id="product_quantity_input" placeholder="Enter Product Quantity (10)" required step="any" aria-describedby="product_quantity_help">
@@ -49,11 +49,11 @@
                 <button type="submit" id="purchase_btn">&dollar; Purchase</button>
             </form>
 
-            <h5>Product Description<h5>
+            <h5>Product Description</h5>
 
-            <h3 id="particular_product_description_h3">
+            <h5 id="particular_product_description_h5">
                 {{ particular_product.description }}
-            <h3>    
+            </h5>    
         </div>
 
         <div id="particular_product_more_photos_div">

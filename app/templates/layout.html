@@ -44,8 +44,8 @@
                 </ul>
                     
                 <form class="form-inline my-2 my-lg-0" id="search_form">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Type to Search" aria-label="Search" name="full_search">
-                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                    <input class="form-control" type="search" placeholder="Type to Search" aria-label="Search" name="full_search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
                 </form>
 
                 <ul class="navbar-nav mr-auto" id="profile_and_logout_ul">
@@ -104,16 +104,6 @@
                 </div>
             </div>
         </div>
-
-        <script>
-            // click `See Modal` button to display flashed message if there are any and set the button to display none
-            document.addEventListener("DOMContentLoaded", () =>
-            {
-                flash_btn = document.getElementById("display_flashed_messages_modal_btn")
-                flash_btn.click()
-                flash_btn.remove();
-            });
-        </script>
 
     {% endif %}
 

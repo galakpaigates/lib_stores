@@ -6,7 +6,7 @@
 
 {% block main %}
 
-    <h3>Our Products</h3>
+    <h3 id="our_products_h3">Our Products</h3>
 
     {% if full_product_information %}
 
@@ -45,12 +45,12 @@
 
                         <a href="/products/{{ product_info.id }}+{{ product_info.store_id }}">
                             <div class="product_info_div">
-                                <div class="product_name_div">
+                                <span class="product_name_span">
                                     {{ product_info.name }}
-                                </div>
-                                <div class="product_price_div">
-                                    ({{ product_info.price }})
-                                </div>
+                                    <span>
+                                        ({{ product_info.price }})
+                                    </span>
+                                </span>
                                 <button class="purchase_product">&dollar; Purchase</button>
                             </div>
                         </a>

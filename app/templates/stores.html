@@ -53,7 +53,7 @@
                 </div>
                 <br>
                 <ul class="nav nav-tabs" id="nav_tabs">
-                    <li>
+                    <li id="patricular_store_products_li">
                         {% if store_products %}
 
                             <div id="all_products_div">
@@ -87,18 +87,18 @@
                                                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                             </button>
                                         </div>
-                        
-                                        <div class="product_info_div">
-                                            <a href="/products/{{ product_info.id }}+{{ product_info.store_id }}">
-                                                <div class="product_name_div">
+
+                                        <a href="/products/{{ product_info.id }}+{{ product_info.store_id }}">
+                                            <div class="product_info_div">
+                                                <span class="product_name_span">
                                                     {{ product_info.name }}
-                                                </div>
-                                                <div class="product_price_div">
-                                                    ({{ product_info.price }})
-                                                </div>
+                                                    <span>
+                                                        ({{ product_info.price }})
+                                                    </span>
+                                                </span>
                                                 <button class="purchase_product">&dollar; Purchase</button>
-                                            </a>
-                                        </div>
+                                            </div>
+                                        </a>
                                     </div>
                                 
                                 {% endfor %}
@@ -127,19 +127,19 @@
                                     <td>{{ store_full_information.head_branch_location }}</td>
                                 </tr>
                                 <tr>
-                                    <th scope="row">All Branches</th>
+                                    <th scope="row">All Branches: </th>
                                     <td>{{ store_full_information.branches_location }}</td>
                                 </tr>
                                 <tr>
-                                    <th scope="row">Contact Number</th>
+                                    <th scope="row">Contact Number: </th>
                                     <td>+231{{ store_full_information.contact_number }}</td>
                                 </tr>
                                 <tr>
-                                    <th scope="row">Email address</th>
+                                    <th scope="row">Email address: </th>
                                     <td>{{ store_full_information.email }}</td>
                                 </tr>
                                 <tr>
-                                    <th scope="row">More Information</th>
+                                    <th scope="row">More Information: </th>
                                     <td>{% if store_full_information.about | length > 0 %} {{ store_full_information.about }} {% else %} Just Business {% endif %} </td>
                                 </tr>
                             </tbody>

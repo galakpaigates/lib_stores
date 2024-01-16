@@ -5,13 +5,14 @@
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-evenly;
-    gap: 2em;
+    gap: 1em;
     margin-top: 3em;
+    padding: 0 0.5em;
 }
 
 .each_product_div {
-    width: 19rem;
-    height: 29rem;
+    width: 18rem;
+    height: 27rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -19,6 +20,11 @@
     overflow: hidden;
     cursor: pointer;
     transition: all 0.15s;
+}
+
+.each_product_div a {
+    width: 100%;
+    font-size: 1.35rem;
 }
 
 .product_picture_div {
@@ -72,15 +78,9 @@
     z-index: 150 !important;
 }
 
-.product_name_div {
-    font-size: 1.6rem;
-    display: inline;
-    padding: 0.4em;
-}
-
-.product_price_div {
-    font-size: 1.5rem;
-    display: inline;
+.product_info_div .product_name_span {
+    max-height: 70px !important;
+    display: block;
 }
 
 .purchase_product {
@@ -118,44 +118,56 @@
 /* desktop only css begins here */
 @media only screen and (min-width: 992px) {
     .each_product_div:hover {
-        width: 20rem;
-        height: 30rem;
+        margin-top: -7px;
         box-shadow: 0 0 5px var(--feldgrau);
+    }
+
+    #signup_h1,
+    #login_h1 {
+        margin-top: 3.5em;
+    }
+
+    #add_product_h2 {
+        margin: 4.5em 0 1em 0;
+    }
+
+    #our_products_h3 {
+        margin-top: 5em;
     }
 }
 /* desktop only css ends here */
 
 /* mobile only css begins here */
 @media only screen and (max-width: 991.9px) {
-    
+    #signup_h1,
+    #login_h1,
+    #add_product_h2,
+    #our_products_h3 {
+        margin-top: 4em;
+    }
 }
 /* mobile only css ends here */
 
 /* css to enable 2x* grid on mobile begins here */
 @media only screen and (max-width: 675.9px) {
+    .each_product_div a {
+        font-size: 0.85rem;
+    }
+
+    .product_info_div span {
+        max-height: 40px !important;
+    }
+
     #all_products_div {
         margin-top: 1em;
         justify-content: center;
+        gap: 1.4em;
     }
     
     .each_product_div {
-        width: 41vw;
-        height: 18em;
-        gap: 0.25em;
-    }
-
-    .product_info_div div {
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .product_name_div,
-    .product_price_div {
-        font-size: 1rem;
-        display: inline !important;
+        width: 43vw;
+        height: 17em;
+        gap: 0.1em;
     }
     
     .purchase_product {

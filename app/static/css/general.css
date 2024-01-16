@@ -72,10 +72,6 @@ body {
     margin-bottom: 15vh;
 }
 
-main {
-    margin-top: 9rem;
-}
-
 main h1,
 main h2,
 main h3,
@@ -154,9 +150,7 @@ textarea {
     #search_form {
         display: flex;
         flex-direction: column;
-        width: 90vw;
-        margin-left: 1vw;
-        gap: 1.2em;
+        gap: 1em;
     }
 
     #search_form input[type='search'],
@@ -183,10 +177,6 @@ textarea {
         flex-direction: row;
         justify-content: center;
         gap: 7.5vw;
-    }
-
-    main {
-        margin-top: 7.5em;
     }
 }
 /* mobile only css ends here */

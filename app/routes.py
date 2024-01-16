@@ -435,6 +435,9 @@ def add_product():
         
         if len(product_name.strip()) <= 3 or ' ' not in product_name.strip():
             return refill_input_fields(sign_up_type="add_product", product_name_error="Please provide a descriptive product name! e.g. 'Face cap' instead of just 'Cap' or 'Cowboy Hat' instead of just 'Hat'")
+
+        elif len(product_name.strip()) >= 50:
+            return refill_input_fields(sign_up_type="add_product", product_name_error="Product name must be less than 50 characters. You can provide more information in the Product Description further below")
         
         elif not validate_product_price(product_price):
             return refill_input_fields(sign_up_type="add_product", product_price_error="Product price must be a positive real number! e.g. 12.5 or 19.0")
