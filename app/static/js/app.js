@@ -171,4 +171,11 @@ document.addEventListener("DOMContentLoaded", () =>
         flash_btn.remove();
     }
     catch { /* pass */ }
+
+    try
+    {
+        if (document.getElementById("particular_product_description_h5").textContent.length > 800)
+            document.getElementById("product_information_and_quantity_form_div").style.position = "relative";
+    }
+    catch { /* pass */ }
 });

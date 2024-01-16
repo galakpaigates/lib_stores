@@ -111,6 +111,7 @@
 
 #particular_product_description_h5 {
     color: var(--feldgrau) !important;
+    padding: 0 5px;
 }
 
 #buy_product_form small {
@@ -118,8 +119,17 @@
     text-align: left;
 }
 
+#product_information_and_quantity_form_div a {
+    text-decoration: underline;
+    padding-left: 3px;
+}
+
 /* desktop only css begins here */
 @media only screen and (min-width: 992px) {
+    #product_information_and_quantity_form_div {
+        position: fixed;
+    }
+
     #particular_product_more_photos_div {
         position: fixed;
         display: flex;
@@ -128,7 +138,7 @@
         height: 88vh;
         width: 65vw;
         right: 0;
-        margin-top: 1vh;
+        margin-top: 0.175vh;
     }
 
     #buy_product_form {
@@ -214,11 +224,6 @@
         justify-content: center;
         align-items: center;
         width: 100%;
-    }
-
-    #product_information_and_quantity_form_div a {
-        text-decoration: underline;
-        padding-left: 3px;
     }
     
     #store_name_div h1,
