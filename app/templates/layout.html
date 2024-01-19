@@ -16,6 +16,10 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/signup.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/products.css') }}">
 
+    <style>
+        {% block additional_style %}{% endblock additional_style %}
+    </style>
+
     <title>{% block title %}{% endblock title %} | LIB Stores</title>
 </head>
 <body>
@@ -44,7 +48,7 @@
                 </ul>
                     
                 <form class="form-inline my-2 my-lg-0" id="search_form">
-                    <input class="form-control" type="search" placeholder="Type to Search" aria-label="Search" name="full_search">
+                    <input class="form-control" type="search" placeholder="Type to Search" id="search_input" autofocus aria-label="Search" name="full_search">
                     <button class="btn btn-outline-success" type="submit">Search</button>
                 </form>
 
@@ -67,6 +71,11 @@
                     </li>
                 </ul>
 
+                <form class="form-inline my-2 my-lg-0" id="search_form">
+                    <input class="form-control" type="search" placeholder="Type to Search" id="search_input" autofocus aria-label="Search" name="full_search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+
                 <ul class="navbar-nav mr-auto" id="signup_login_ul">
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('all_routes.sign_up') }}">Sign Up</a>
@@ -79,6 +88,10 @@
             {% endif %}
         </div>
     </nav>
+
+    <div id="search_results_div">
+        
+    </div>
     
     {% if get_flashed_messages() %}
         {% set flashed_messaged = get_flashed_messages(with_categories=True) %}
@@ -114,11 +127,11 @@
     </main>
 
     <footer></footer>
-
-    <script src="{{ url_for('static', filename='js/app.js')}}"></script>
-
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    
+    <script src="{{ url_for('static', filename='js/app.js')}}"></script>
 </body>
 </html>

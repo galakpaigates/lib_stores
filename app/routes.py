@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for, session
+from flask import Blueprint, render_template, request, flash, redirect, url_for, session, jsonify
 import re, os, base64
 from datetime import datetime
 
@@ -429,6 +429,7 @@ def add_product():
         
         # get input fields values from the form
         product_name = form_data.get("product_name")
+        product_type = form_data.get("product_type")
         product_price = form_data.get("product_price")
         product_quantity = form_data.get("product_quantity")
         product_description = form_data.get("product_description")
@@ -449,6 +450,10 @@ def add_product():
         # ensure description is atleast 50 character with punctuations and spaces being counted and there are atleast 7 spaces in the description
         elif not validate_product_description(product_description):
             return refill_input_fields(sign_up_type="add_product", product_description_error="Product description must be atleast 60 characters long inorder to convince your customer to buy your product! (punctuations and spaces don't count)")
+        
+        # validate the product type for length, numbers count, characters count
+        elif not validate_product_type(product_type)[0]:
+            return refill_input_fields(sign_up_type="add_product", product_type_error=validate_product_type(product_type)[1])
 
         picture_data_list = []
 
@@ -477,7 +482,7 @@ def add_product():
 
                 
         # ensure the information are in the format you want to store in the database
-        product_name = product_name.title()
+        product_name = product_name
         product_price = float(product_price)
         product_quantity = int(product_quantity)
         product_description = product_description.strip()
@@ -490,20 +495,22 @@ def add_product():
                 INSERT INTO products (
                     store_id,
                     name,
+                    type,
                     price,
                     quantity,
                     description,
                     creation_date
                 ) VALUES (
-                    ?, ?, ?, ?, ?, ?
+                    ?, ?, ?, ?, ?, ?, ?
                 );
             """,
             session['current_user_info']['id'],
             product_name,
+            product_type,
             product_price,
             product_quantity,
             product_description,
-            datetime.now().strftime("%d-%m-%Y %M:%H")
+            datetime.now().strftime("%d-%m-%Y %H:%M")
         )
         
         # get the id of the product we added above
@@ -531,7 +538,7 @@ def add_product():
                 picture_data
             )
         
-        # replate all product pictures
+        # replace all product pictures
         # lib_stores_db.execute(
         #     """
         #         UPDATE product_pictures 
@@ -587,11 +594,12 @@ def product_page(product_id_and_store_id):
         each_picture['picture'] = base64.b64encode(each_picture['picture']).decode('utf-8')
         
     particular_product['price'] = usd(particular_product['price'])
+    particular_product['creation_date'] = particular_product['creation_date'].rsplit(" ", 1)[0]
     
     return render_template("product_page.html", particular_product=particular_product, store_name=store_name, particular_product_photos=particular_product_photos, product_id_and_store_id=product_id_and_store_id)
 
 
-@all_routes.route("/buy/", methods=['POST', 'GET'])
+@all_routes.route("/buy/", methods=['POST'])
 @login_required
 def buy():
     product_quantity = request.form.get("product_quantity")
@@ -655,6 +663,9 @@ def buy():
         flash(message=("Not enough product", f"The quantity of product available for sale is less than what you've ordered! ({current_product_quantity + int(product_quantity)} currently available for sale!)"), category="danger")
         return redirect(request.headers.get("Referer"))
     
+    lib_stores_db.execute("BEGIN;")
+
+    # set the new quantity of the product
     lib_stores_db.execute(
         """
             UPDATE products
@@ -667,6 +678,7 @@ def buy():
         store_id,
         product_id
     )
+        
     
     # send an email to the store informing them about the purchase request
     
@@ -689,6 +701,29 @@ def buy():
             session["current_user_info"]['id']
         )[0]
         
+        # record the transaction accordingly in the customer_purchases table
+        lib_stores_db.execute(
+            """
+                INSERT INTO customer_purchases
+                (
+                    product_id,
+                    unit_cost,
+                    quantity,
+                    customer_id,
+                    store_id,
+                    date_and_time
+                )
+                VALUES
+                (?, ?, ?, ?, ?, ?)
+            """,
+            product_id,
+            float(current_product_info[0]['price']),
+            product_quantity,
+            session['current_user_info']['id'],
+            store_id,
+            datetime.now().strftime("%d-%m-%Y %H:%M")
+        )
+        
     else:
         buyer_info = lib_stores_db.execute(
             """
@@ -697,6 +732,31 @@ def buy():
             """,
             session["current_user_info"]["id"]
         )[0]
+        
+        # record the transaction accordingly in the store_purchases table
+        lib_stores_db.execute(
+            """
+                INSERT INTO store_purchases
+                (
+                    product_id,
+                    unit_cost,
+                    quantity,
+                    buyer_store_id,
+                    seller_store_id,
+                    date_and_time
+                )
+                VALUES
+                (?, ?, ?, ?, ?, ?);
+            """,
+            product_id,
+            float(current_product_info[0]['price']),
+            product_quantity,
+            session['current_user_info']['id'],
+            store_id,
+            datetime.now().strftime("%d-%m-%Y %H:%M")
+        )
+        
+    lib_stores_db.execute("COMMIT;")
         
     # get the price and name of the product to be purchased
     price = float(current_product_info[0]['price'])
@@ -710,4 +770,51 @@ def buy():
     
     flash(message=("Purchase Request Sent!", "The purchase request has been sent to the store, the product will be delivered to the address you entered!"), category="success")
     return redirect(url_for("index"))
+
+
+@all_routes.route("/search/", methods=['POST'])
+def search():
+    
+    query = request.get_json()['query_value']
+    
+    if len(query) <= 0 or len(query) == count_spaces(query) or len(query) == count_special_char(query):
+        return jsonify({})
+    
+    lib_stores_db.execute("BEGIN;")
+
+    # query the products name and description for matching words
+    query_results = lib_stores_db.execute(
+        """
+            SELECT * FROM products 
+            WHERE name LIKE ?
+            OR
+            type LIKE ?
+            OR
+            description LIKE ?;
+        """,
+        '%' + query + '%',
+        '%' + query + '%',
+        '%' + query + '%'
+    )
+    
+    lib_stores_db.execute("COMMIT;")
+    
+    tmp_img = None
+    
+    # get the first image for all those products and convert them to base64 imgs
+    for result in query_results:
+        
+        tmp_img = lib_stores_db.execute(
+            """
+                SELECT picture FROM product_pictures
+                WHERE product_id = ?
+                LIMIT 1;
+            """,
+            result['id']
+        )[0]
+        
+        result["picture"] = base64.b64encode(tmp_img["picture"]).decode("utf-8")
+    
+    # return the final query result
+    return jsonify(query_results)
 

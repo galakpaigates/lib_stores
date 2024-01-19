@@ -10,8 +10,7 @@
 }
 
 * {
-    font-family: 'Kanit', sans-serif;
-    font-family: 'Stylish', serif;
+    font-family: 'Stylish', sans-serif;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -96,6 +95,50 @@ main h5 {
 textarea {
     min-height: 60px;
 }
+
+#search_results_div {
+    z-index: 900;
+    width: 30.25vw;
+    position: fixed;
+    margin: 0 0 0 34vw;
+    display: none;
+    flex-direction: column;
+    background-color: var(--dark-blue);
+    color: var(--platinum);
+    padding: 10px 0.5em;
+    gap: 0.5em;
+    max-height: 75vh;
+    overflow-y: scroll;
+    scroll-behavior: auto;
+    box-shadow: 4px 4px .5em #42506d, -4px 4px .5em #42506d;
+    border-radius: 0 0 7px 7px;
+}
+
+#search_results_div .each_search_result_div {
+    color: var(--platinum);
+    background-color: var(--dark-blue) !important;
+    width: 100%;
+    font-size: 22px;
+    display: flex;
+    flex-direction: row;
+    gap: 0.5em;
+}
+
+#search_results_div .each_search_result_div .each_search_result_info_div {
+    display: flex;
+    flex-direction: column;
+}
+
+#search_results_div .each_search_result_div .each_search_result_info_div .search_result_price_available_quantity_span {
+    font-size: 19px;
+}
+
+#search_results_div .each_search_result_img {
+    width: 4em;
+    height: 4em;
+    object-fit: cover;
+    border-radius: 12px;
+}
 /* all screen size css ends here */
 
 /* desktop only css begins here */
@@ -121,6 +164,20 @@ textarea {
         width: 29.5vw;
         max-width: 400px;
     }
+    
+    #search_form button[type='submit'] {
+        width: 9.5vw;
+        max-width: 150px;
+    }
+    
+    #search_results_div {
+        margin-top: -45px;
+        min-width: 35.75em;
+    }
+
+    #search_results_div .each_search_result_div:hover {
+        opacity: 0.8;
+    }
 
     #profile_and_logout_ul {
         align-items: center;
@@ -128,13 +185,9 @@ textarea {
         flex: 1;
     }
 
-    #search_form button[type='submit'] {
-        width: 9.5vw;
-        max-width: 150px;
-    }
-
     #signup_login_ul {
-        position: absolute;
+        flex: 1;
+        justify-content: flex-end;
         right: 2em;
     }
 }
@@ -158,6 +211,18 @@ textarea {
         text-align: center;
         width: 100% !important;
         margin-right: 0 !important;
+    }
+
+    #search_results_div {
+        width: 96vw;
+        margin: 70px 0 0 2vw;
+        z-index: 100000;
+    }
+
+    #search_results_div .each_search_result_div {
+        width: 100%;
+        color: var(--platinum);
+        font-size: 22px;
     }
 
     #navbar_toggle_btn {

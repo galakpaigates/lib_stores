@@ -65,8 +65,8 @@
                                                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                             </button>
                         
-                                            <div class="carousel-inner product_pictures_slideshow_div">
-                                                <a href="/products/{{ product_info.id }}+{{ product_info.store_id }}">
+                                            <a href="/products/{{ product_info.id }}+{{ product_info.store_id }}">
+                                                <div class="carousel-inner product_pictures_slideshow_div">
                                                     <div class="carousel-item active">
                                                         <img src="data:image/png;base64,{{ product_id_and_photos[product_info.id][0]['picture'] }}" class="d-block w-100 product_picture" alt="{{ product_info.name }}">
                                                     </div>
@@ -80,8 +80,8 @@
                         
                                                         {% endif %}
                                                     {% endfor %}
-                                                </a>
-                                            </div>
+                                                </div>
+                                            </a>
                         
                                             <button class="next_pic" type="button">
                                                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
@@ -156,3 +156,9 @@
     {% endif %}
 
 {% endblock main %}
+
+{% block additional_style %}
+    #search_results_div {
+        margin-top: -10px;
+    }
+{% endblock additional_style %}

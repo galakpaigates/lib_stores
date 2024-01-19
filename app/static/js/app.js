@@ -69,6 +69,9 @@ document.addEventListener("click", (event) =>
 {
     const clicked_element = event.target;
 
+    if (clicked_element.id !== "search_results_div" && clicked_element.id !== "search_input")
+        document.getElementById("search_results_div").style.display = "none";
+
     // listen for changing of tabs
     if (clicked_element.className.includes("nav_bar_title"))
     {
@@ -83,6 +86,9 @@ document.addEventListener("click", (event) =>
 
     else if (clicked_element.className === "prev_pic")
         prev_picture(clicked_element)
+
+    else if (clicked_element.id === "clear_search_input_div")
+        document.getElementById("search_input").value = "";
 });
 
 // display and remove the contents of the list elements
@@ -159,9 +165,39 @@ function prev_picture(particular_product)
 
 document.addEventListener("DOMContentLoaded", () => 
 {
-    
+    // listen for input on the search field and make an ajax request to the search endpoint to query the database for matching information
+    $("#search_input").on("input", (event) =>
+    {
+        const search_query = event.target.value;
+
+        // remove the search_results_div and do nothing else if the input field is blank
+        if (search_query.length <= 0)
+        {
+            document.getElementById("search_results_div").style.display = "none";
+            return;
+        }
+
+        // send request
+        $.ajax({
+            url: "/search/",
+            method: "POST",
+            data: JSON.stringify({
+                query_value: search_query
+            }),
+            dataType: 'json',
+            contentType: 'application/json',
+            success: ((_res) =>
+            {
+                display_search_results(_res);
+            }),
+            error: ((_res) =>
+            {
+                console.error(_res)
+            })
+        });
+    });
+
     navbar_height = document.getElementById("navbar").offsetHeight;
-    console.log(navbar_height)
     document.querySelector("main").style.marginTop = navbar_height + "px";
 
     try
@@ -174,8 +210,52 @@ document.addEventListener("DOMContentLoaded", () =>
 
     try
     {
+        // check if the product description is more that 800 characters and make the div scrollable
         if (document.getElementById("particular_product_description_h5").textContent.length > 800)
+            document.getElementById("product_information_and_quantity_form_div").style.position = "relative";
+
+        // check if the product name is more than 35 characters and the product name is more than 400 characters and make the div scrollable
+        else if (document.getElementById("store_name_div").children[0].textContent.length > 30 && document.getElementById("particular_product_description_h5").textContent.length > 400 && window.innerWidth < 1800)
+            document.getElementById("product_information_and_quantity_form_div").style.position = "relative";
+
+        // check if the product name is more than 40 characters then make the div scrollable
+        else if (document.getElementById("store_name_div").children[0].textContent.length > 40 && window.innerWidth < 1800)
             document.getElementById("product_information_and_quantity_form_div").style.position = "relative";
     }
     catch { /* pass */ }
 });
+
+function display_search_results(results)
+{
+    const search_results_div = document.getElementById("search_results_div");
+
+    if (results.length <= 0)
+    {
+        search_results_div.innerHTML = "<h3>No match found!</h3>";
+        return;
+    }
+
+    search_results_div.innerHTML = "";
+    search_results_div.style.display = "flex";
+
+    for (let i = 0; i < results.length; i++)
+    {
+        search_results_div.insertAdjacentHTML('beforeend',
+        `
+            <a href="/products/${results[i].id}+${results[i].store_id}">
+                <div class="each_search_result_div">
+                    <img class="each_search_result_img" src="data:image/png;base64,${results[i].picture}" alt="${results[i].name}">
+                    <div class="each_search_result_info_div">
+                        <span class="search_result_name_span">
+                            ${results[i].name}
+                        </span>
+                        <span class="search_result_price_available_quantity_span">
+                            $${results[i].price} &bull; ${results[i].quantity} in stock
+                        </span>
+                    </div>
+                </div>
+            </a>
+        `);
+    }
+}
+

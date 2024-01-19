@@ -43,7 +43,6 @@
 #store_name_div {
     flex: 1 0 60%;
     display: flex;
-    align-items: left;
     justify-content: center;
     flex-direction: column;
 }

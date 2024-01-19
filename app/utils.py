@@ -5,7 +5,7 @@ from string import ascii_uppercase, ascii_lowercase, punctuation, digits, ascii_
 from email.message import EmailMessage
 
 MAIL_ADDR = "galakpaigates@gmail.com"
-APP_PASSWORD = "hmxg bqpk qqfd xhps"
+APP_PASSWORD = "tscg phol rbhl mygg"
 
 # email regular expression for email validation
 email_regex = r'^\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
@@ -47,7 +47,8 @@ def refill_input_fields(
         product_name_error=None,
         product_price_error=None,
         product_quantity_error=None,
-        product_description_error=None
+        product_description_error=None,
+        product_type_error=None
     ):
 
     form_data = request.form
@@ -149,6 +150,7 @@ def refill_input_fields(
     elif sign_up_type == "add_product":
         
         product_name = form_data.get("product_name")
+        product_type = form_data.get("product_type")
         product_price = form_data.get("product_price")
         product_quantity = form_data.get("product_quantity")
         product_description = form_data.get("product_description")
@@ -156,10 +158,12 @@ def refill_input_fields(
         return render_template(
             "add_product.html",
             product_name=product_name,
+            product_type=product_type,
             product_price=product_price,
             product_quantity=product_quantity,
             product_description=product_description,
             product_name_error=product_name_error,
+            product_type_error=product_type_error,
             product_price_error=product_price_error,
             product_quantity_error=product_quantity_error,
             product_description_error=product_description_error,
@@ -332,6 +336,50 @@ def count_spaces(string):
             space_count += 1
             
     return space_count
+
+
+def count_special_char(string):
+    
+    special_char_count = 0
+    
+    for char in string:
+        if char in punctuation:
+            special_char_count += 1
+            
+    return special_char_count
+
+
+def count_numbers(string):
+    
+    number_count = 0
+    
+    for char in string:
+        if char in punctuation:
+            number_count += 1
+            
+    return number_count
+
+
+def count_numbers(string):
+    
+    number_count = 0
+    
+    for char in string:
+        if char in digits:
+            number_count += 1
+            
+    return number_count
+
+
+def count_alphas(string):
+    
+    alpha_count = 0
+    
+    for char in string:
+        if char in ascii_letters:
+            alpha_count += 1
+            
+    return alpha_count
 
 
 def validate_product_price(price):
@@ -532,4 +580,24 @@ def send_purchase_email(phone_number, store_name, quantity, price, product_name,
 
 def format_phone_number(phone_number):
     return "+231" + phone_number
+
+
+def validate_product_type(product_type):
+
+    if count_special_char(product_type) >= 3:
+        return (False, "Too many special characters/punctuations!")
+                
+    if len(product_type) <= 2:
+        return (False, "Product Type too short!")
+    
+    if count_numbers(product_type) >= 3:
+        return (False, "Too many numbers!")
+    
+    if len(product_type) > 30:
+        return (False, "Product Type must be atmost 20 characters!")
+    
+    if count_alphas(product_type) < 3:
+        return (False, "Invalid product type!")
+    
+    return (True, "Good")
 

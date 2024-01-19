@@ -49,11 +49,15 @@
                 <button type="submit" id="purchase_btn">&dollar; Purchase</button>
             </form>
 
+            <h5>
+                Added Since: {{ particular_product.creation_date }}
+            </h5>
+
             <h5>Product Description</h5>
 
             <h5 id="particular_product_description_h5">
                 {{ particular_product.description }}
-            </h5>    
+            </h5>
         </div>
 
         <div id="particular_product_more_photos_div">
@@ -83,7 +87,7 @@
                 <button class="next_pic" type="button">
                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                 </button>
-            </div>-
+            </div>
         </div>
     </div>
 

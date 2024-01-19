@@ -22,6 +22,18 @@
         </div>
 
         <div class="form-group">
+            <label for="product_type_input">Product Type</label>
+            <input type="text" name="product_type" autofocus class="form-control" id="product_type_input" placeholder="Enter Product Type" required {% if product_type %}value="{{ product_type }}"{% endif %}>
+            <small id="about_store_help" class="form-text text-muted">Whether it's a Sneaker, Shoe, Phone, Laptop, Stove, Bag, Light Bulb or whatever type of thing it is</small>
+
+            {% if product_type_error %}
+                <div class="invalid_feedback">
+                    {{ product_type_error }}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
             <label for="product_price_input">Product Price $ (USD)</label>
             <input type="number" name="product_price" class="form-control" id="product_price_input" placeholder="Enter Product Price ($19.2)" step="any" {% if product_price %}value="{{ product_price }}"{% endif %}>
             <small id="about_store_help" class="form-text text-muted">How much would one of this product cost in USD?</small>
