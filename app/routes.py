@@ -353,6 +353,9 @@ def login_as_store():
             'account_type': 'store'
         }
         
+        session['profile_picture'] = base64.b64encode(existing_store['profile_picture']).decode('utf-8')
+        print(session)
+        
         flash(message=("Successfully Logged In!", "Success: You have Logged In to your Store as Manager!",), category="success")
         return redirect(url_for("index"))
     
