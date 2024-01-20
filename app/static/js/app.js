@@ -69,7 +69,7 @@ document.addEventListener("click", (event) =>
 {
     const clicked_element = event.target;
 
-    if (clicked_element.id !== "search_results_div" && clicked_element.id !== "search_input")
+    if (clicked_element.id !== "search_results_div" && clicked_element.id !== "search_input" && clicked_element.id !== "search_btn")
         document.getElementById("search_results_div").style.display = "none";
 
     // listen for changing of tabs
@@ -258,4 +258,9 @@ function display_search_results(results)
         `);
     }
 }
+
+document.getElementById("search_form").addEventListener("submit", (event) => 
+{
+    event.preventDefault();
+});
 
