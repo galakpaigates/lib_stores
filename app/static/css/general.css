@@ -97,10 +97,10 @@ textarea {
 }
 
 #search_results_div {
-    z-index: 900;
+    z-index: 600;
     width: 30.25vw;
     position: fixed;
-    margin: 0 0 0 34vw;
+    margin: -40px 0 0 34vw;
     display: none;
     flex-direction: column;
     background-color: var(--dark-blue);

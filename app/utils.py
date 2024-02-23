@@ -8,7 +8,7 @@ MAIL_ADDR = "galakpaigates@gmail.com"
 APP_PASSWORD = "tscg phol rbhl mygg"
 
 # email regular expression for email validation
-email_regex = r'^\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
+email_regex = r'^\b[A-Za-z0-9.\'_%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
 
 
 ACCOUNT_TYPES = [
@@ -600,4 +600,19 @@ def validate_product_type(product_type):
         return (False, "Invalid product type!")
     
     return (True, "Good")
+
+
+def remove_duplicates(dicts):
+    seen = set()
+    unique_dicts = []
+
+    for d in dicts:
+        # Convert the dictionary to a tuple of key-value pairs
+        # and sort it to ensure consistency
+        dict_tuple = tuple(sorted(d.items()))
+        if dict_tuple not in seen:
+            unique_dicts.append(d)
+            seen.add(dict_tuple)
+
+    return unique_dicts
 

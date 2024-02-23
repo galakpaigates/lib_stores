@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for, session, jsonify
 import re, os, base64
+from PIL import Image
 from datetime import datetime
 
 from .utils import *
@@ -170,12 +171,17 @@ def sign_up_as_store():
         filename = secure_filename(profile_picture.filename)
         filepath = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
         
+        # save the image to the temporary upload folder
         profile_picture.save(filepath)
-        
+
         # final image validation to check the dimensions and format of the uploaded file
         if validate_image(filepath) == False:
             return refill_input_fields(sign_up_type="store", file_upload_error="Please provide a valid image!")
 
+        # compress the image so it can be stored in the browser session
+        compressed_image = Image.open(filepath)
+        compressed_image.save(filepath, quality=40)
+        
         with open(filepath, 'rb') as uploaded_picture:
             picture_data = uploaded_picture.read()
              
@@ -202,7 +208,6 @@ def sign_up_as_store():
                     head_branch_location,
                     branches_location,
                     about,
-                    profile_picture
                 ) VALUES (
                     ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
                 );
@@ -315,10 +320,11 @@ def login():
 @all_routes.route("/login/store/", methods=['POST', 'GET'])
 def login_as_store():
     
-    # make sure the current user's information is cleared
-    session.clear()
-    
     if request.method == "POST":
+
+        # make sure the current user's information is cleared
+        session.clear()
+    
         form_data = request.form
         
         # get the values in the form
@@ -354,7 +360,6 @@ def login_as_store():
         }
         
         session['profile_picture'] = base64.b64encode(existing_store['profile_picture']).decode('utf-8')
-        print(session)
         
         flash(message=("Successfully Logged In!", "Success: You have Logged In to your Store as Manager!",), category="success")
         return redirect(url_for("index"))
@@ -479,6 +484,10 @@ def add_product():
             if validate_image(filepath) == False:
                 return refill_input_fields(sign_up_type="add_product", file_upload_error="Please provide a valid image!")
 
+            # compress the image so it can be stored in the browser session
+            compressed_image = Image.open(filepath)
+            compressed_image.save(filepath, quality=40)
+        
             # open the file and save the data in a temporary array
             with open(filepath, 'rb') as uploaded_picture:
                 picture_data_list.append(uploaded_picture.read())
@@ -780,27 +789,83 @@ def search():
     
     query = request.get_json()['query_value']
     
+    # return an empty dict if the query length is not greater than 0 or if the user gave all special characters or all spaces
     if len(query) <= 0 or len(query) == count_spaces(query) or len(query) == count_special_char(query):
-        return jsonify({})
+        return jsonify([])
+
+    query_results = []
     
     lib_stores_db.execute("BEGIN;")
 
-    # query the products name and description for matching words
-    query_results = lib_stores_db.execute(
+    # query for products that have the full query in its name or product type
+    name_and_product_type_query_result = lib_stores_db.execute(
         """
-            SELECT * FROM products 
-            WHERE name LIKE ?
+            SELECT * FROM products
+            WHERE 
+            name LIKE ?
             OR
             type LIKE ?
-            OR
-            description LIKE ?;
         """,
-        '%' + query + '%',
         '%' + query + '%',
         '%' + query + '%'
     )
-    
-    lib_stores_db.execute("COMMIT;")
+
+    if len(name_and_product_type_query_result) > 0:
+        # add each product from the search of the each word to the query_results list of dicts
+        for result_dict in name_and_product_type_query_result:
+            query_results.append(result_dict)
+
+    # presume that the query has more than one word if there is a space in the name
+    if ' ' in query:
+            
+        # split the word
+        query = query.split(' ')
+
+        # query the database for individual words
+        for word in query:
+
+            # search for each word in the database
+            word_query_result = lib_stores_db.execute(
+                """
+                    SELECT * FROM products
+                    WHERE name LIKE ?
+                    OR
+                    type LIKE ?
+                    OR
+                    description LIKE ?;
+                """,
+                '%' + word + '%',
+                '%' + word + '%',
+                '%' + word + '%'
+            )
+
+            # add each product from the search of the each word to the query_results list of dicts
+            for result_dict in word_query_result:
+                query_results.append(result_dict)
+        
+        # remove products that may appear more than once in the query result
+        query_results = remove_duplicates(query_results)
+
+    else:
+
+        # query the products name, type and description for matching words
+        word_query_result = lib_stores_db.execute(
+            """
+                SELECT * FROM products 
+                WHERE
+                description LIKE ?;
+            """,
+            '%' + query + '%'
+        )
+
+        if len(word_query_result) > 0:
+
+            # add each product from the search of the entire query to the query_results list of dicts
+            for result_dict in word_query_result:
+                query_results.append(result_dict)
+
+            # remove products that may appear more than once in the query result
+            query_results = remove_duplicates(query_results)
     
     tmp_img = None
     
@@ -814,10 +879,12 @@ def search():
                 LIMIT 1;
             """,
             result['id']
-        )[0]
+        )[0]['picture']
         
-        result["picture"] = base64.b64encode(tmp_img["picture"]).decode("utf-8")
+        result["picture"] = base64.b64encode(tmp_img).decode("utf-8")
     
+    lib_stores_db.execute("COMMIT;")
+
     # return the final query result
     return jsonify(query_results)
 

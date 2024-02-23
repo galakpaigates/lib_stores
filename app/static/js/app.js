@@ -53,7 +53,10 @@ try
 
             read_file.addEventListener('load', () =>
             {
-                document.getElementById('profile_picture_preview_div').innerHTML = `<img id="profile_picture_preview" src="${read_file.result}" alt="Selected Image">`
+                document.getElementById('profile_picture_preview_div').innerHTML = 
+				`
+					<img id="profile_picture_preview" src="${read_file.result}" alt="Selected Image">
+				`
             });
         }
     })
@@ -237,6 +240,7 @@ function display_search_results(results)
 
     search_results_div.innerHTML = "";
     search_results_div.style.display = "flex";
+	search_results_div.style.zIndex = "100000";
 
     for (let i = 0; i < results.length; i++)
     {

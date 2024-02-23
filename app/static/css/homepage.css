@@ -20,6 +20,7 @@
     overflow: hidden;
     cursor: pointer;
     transition: all 0.15s;
+	border-radius: 13px;
 }
 
 .each_product_div a {
@@ -92,6 +93,7 @@
     border: 1px solid var(--light-gray);
     background-color: var(--white);
     color: var(--light-gray);
+	border-radius: 10px;
 }
 
 .purchase_product:hover {
