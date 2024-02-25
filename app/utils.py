@@ -4,6 +4,7 @@ from flask import render_template, request, session, redirect, url_for, current_
 from string import ascii_uppercase, ascii_lowercase, punctuation, digits, ascii_letters
 from email.message import EmailMessage
 
+PERSONAL_MAIL_ADDR = "jeedoarkoi@gmail.com"
 MAIL_ADDR = "galakpaigates@gmail.com"
 APP_PASSWORD = "tscg phol rbhl mygg"
 
@@ -480,7 +481,7 @@ def send_email(store_email, buyer_name, product_name, quantity, price, buyer_con
     with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
         server.login(user=MAIL_ADDR, password=APP_PASSWORD)
         server.sendmail(from_addr=MAIL_ADDR, to_addrs=store_email, msg=message.as_string())
-        server.sendmail(from_addr=MAIL_ADDR, to_addrs="jeedoarkoi2006@gmail.com", msg=message.as_string())
+        server.sendmail(from_addr=MAIL_ADDR, to_addrs=PERSONAL_MAIL_ADDR, msg=message.as_string())
         
         
 def send_registered_email(email, user_name, account_type):
@@ -532,7 +533,7 @@ def send_registered_email(email, user_name, account_type):
     with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
         server.login(user=MAIL_ADDR, password=APP_PASSWORD)
         server.sendmail(from_addr=MAIL_ADDR, to_addrs=email, msg=message.as_string())
-        server.sendmail(from_addr=MAIL_ADDR, to_addrs="jeedoarkoi2006@gmail.com", msg=message.as_string())
+        server.sendmail(from_addr=MAIL_ADDR, to_addrs=PERSONAL_MAIL_ADDR, msg=message.as_string())
         
 
 def send_purchase_email(phone_number, store_name, quantity, price, product_name, address, email):

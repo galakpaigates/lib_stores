@@ -76,7 +76,10 @@
     flex: 1;
     text-align: center;
     color: var(--platinum);
-    z-index: 150 !important;
+    z-index: 150;
+	position: relative;
+	display: flex;
+	flex-direction: column;
 }
 
 .product_info_div .product_name_span {
