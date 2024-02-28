@@ -181,6 +181,11 @@ document.addEventListener("DOMContentLoaded", () => {
     catch { /* pass */ }
 
     try {
+        document.getElementById("increaseSearchResultsDivTopMarginBtn").click();
+    }
+    catch { /* pass */ }
+
+    try {
         // check if the product description is more that 800 characters and make the div scrollable
         if (document.getElementById("particular_product_description_h5").textContent.length > 800)
             document.getElementById("product_information_and_quantity_form_div").style.position = "relative";
@@ -226,6 +231,15 @@ function display_search_results(results) {
             </a>
         `);
     }
+}
+
+function increaseSearchResultsDivMarginTop() {
+
+    document.getElementById("increaseSearchResultsDivTopMarginBtn").remove();
+
+    // add the margin top only if the user is using a mobile phone
+    if (window.innerWidth <= 990)
+        document.getElementById("search_results_div").classList.add("more-margin");
 }
 
 document.getElementById("search_form").addEventListener("submit", (event) => {

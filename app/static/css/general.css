@@ -9,6 +9,17 @@
     --dark-blue: #193053;
 }
 
+/* utility classes starts here */
+.none {
+    display: none;
+}
+
+.more-margin {
+    margin-top: 7em !important;
+}
+
+/* utility classes ends here */
+
 * {
     font-family: 'Stylish', sans-serif;
     margin: 0;
@@ -110,7 +121,7 @@ textarea {
     max-height: 75vh;
     overflow-y: scroll;
     scroll-behavior: auto;
-    box-shadow: 4px 4px .5em #42506d, -4px 4px .5em #42506d;
+    box-shadow: 7.5px 7.5px 8px #596d92, -7.5px 7.5px 8px #596d92;
     border-radius: 0 0 7px 7px;
 }
 
@@ -139,6 +150,7 @@ textarea {
     object-fit: cover;
     border-radius: 12px;
 }
+
 /* all screen size css ends here */
 
 /* desktop only css begins here */
@@ -164,12 +176,12 @@ textarea {
         width: 29.5vw;
         max-width: 400px;
     }
-    
+
     #search_form button[type='submit'] {
         width: 9.5vw;
         max-width: 150px;
     }
-    
+
     #search_results_div {
         margin-top: -45px;
         min-width: 35.75em;
@@ -191,6 +203,7 @@ textarea {
         right: 2em;
     }
 }
+
 /* desktop only css ends here */
 
 /* mobile only css begins here */
@@ -244,4 +257,5 @@ textarea {
         gap: 7.5vw;
     }
 }
+
 /* mobile only css ends here */
