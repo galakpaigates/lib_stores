@@ -94,9 +94,11 @@
     </nav>
 	
 	<!-- add margin top to the search results div so it won't cover the input field on mobile phone -->
-	{% if session['current_user_info']['account_type'] == "store" %}
-		<button onclick="increaseSearchResultsDivMarginTop()" id="increaseSearchResultsDivTopMarginBtn" class="none">Yeah</button>
-	{% endif %}
+    {% if session['current_user_info'] %}
+        {% if session['current_user_info']['account_type'] == "store" %}
+            <button onclick="increaseSearchResultsDivMarginTop()" id="increaseSearchResultsDivTopMarginBtn" class="none"></button>
+        {% endif %}
+    {% endif %}
 
 	<div id="search_results_div"></div>
     
