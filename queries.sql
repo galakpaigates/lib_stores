@@ -47,31 +47,31 @@
 
 .schema
 
-/* CREATE TABLE customer_purchases ( */
-/*     id INTEGER, */
-/*     product_id INTEGER NOT NULL, */
-/*     unit_cost NUMERIC NOT NULL, */
-/* 	quantity INTEGER NOT NULL, */
-/*     customer_id INTEGER NOT NULL, */
-/*     store_id INTEGER NOT NULL, */
-/*     date_and_time TEXT NOT NULL, */
-/*     PRIMARY KEY(id), */
-/*     FOREIGN KEY(customer_id) REFERENCES customers(id), */
-/*     FOREIGN KEY(store_id) REFERENCES stores(id), */
-/*     FOREIGN KEY(product_id) REFERENCES products(id) */
-/* ); */
+-- CREATE TABLE customer_purchases (
+--     id INTEGER,
+--     product_id INTEGER NOT NULL,
+--     unit_cost NUMERIC NOT NULL,
+-- 	quantity INTEGER NOT NULL,
+--     customer_id INTEGER NOT NULL,
+--     store_id INTEGER NOT NULL,
+--     date_and_time TEXT NOT NULL,
+--     PRIMARY KEY(id),
+--     FOREIGN KEY(customer_id) REFERENCES customers(id),
+--     FOREIGN KEY(store_id) REFERENCES stores(id),
+--     FOREIGN KEY(product_id) REFERENCES products(id)
+-- );
 
-/* CREATE TABLE store_purchases ( */
-/* 	id INTEGER, */
-/* 	product_id INTEGER NOT NULL, */
-/* 	unit_cost NUMERIC NOT NULL, */
-/* 	quantity INTEGER NOT NULL, */
-/* 	buyer_store_id INTEGER NOT NULL, */
-/* 	seller_store_id INTEGER NOT NULL, */
-/* 	date_and_time TEXT NOT NULL, */
-/* 	PRIMARY KEY(id), */
-/* 	FOREIGN KEY(product_id) REFERENCES products(id), */
-/* 	FOREIGN KEY(buyer_store_id) REFERENCES stores(id), */
-/* 	FOREIGN KEY(seller_store_id) REFERENCES customers(id) */
-/* ); */
+-- CREATE TABLE store_purchases (
+-- 	id INTEGER,
+-- 	product_id INTEGER NOT NULL,
+-- 	unit_cost NUMERIC NOT NULL,
+-- 	quantity INTEGER NOT NULL,
+-- 	buyer_store_id INTEGER NOT NULL,
+-- 	seller_store_id INTEGER NOT NULL,
+-- 	date_and_time TEXT NOT NULL,
+-- 	PRIMARY KEY(id),
+-- 	FOREIGN KEY(product_id) REFERENCES products(id),
+-- 	FOREIGN KEY(buyer_store_id) REFERENCES stores(id),
+-- 	FOREIGN KEY(seller_store_id) REFERENCES customers(id)
+-- );
 
