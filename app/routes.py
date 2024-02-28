@@ -843,6 +843,8 @@ def search():
             for result_dict in word_query_result:
                 query_results.append(result_dict)
         
+        lib_stores_db.execute("COMMIT;")
+        
         # remove products that may appear more than once in the query result
         query_results = remove_duplicates(query_results)
 
@@ -857,6 +859,8 @@ def search():
             """,
             '%' + query + '%'
         )
+        
+        lib_stores_db.execute("COMMIT;")
 
         if len(word_query_result) > 0:
 
@@ -883,7 +887,6 @@ def search():
         
         result["picture"] = base64.b64encode(tmp_img).decode("utf-8")
     
-    lib_stores_db.execute("COMMIT;")
 
     # return the final query result
     return jsonify(query_results)
