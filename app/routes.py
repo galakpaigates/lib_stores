@@ -180,7 +180,7 @@ def sign_up_as_store():
 
         # compress the image so it can be stored in the browser session
         compressed_image = Image.open(filepath)
-        compressed_image.save(filepath, quality=40)
+        compressed_image.save(filepath, quality=10)
         
         with open(filepath, 'rb') as uploaded_picture:
             picture_data = uploaded_picture.read()
@@ -487,7 +487,7 @@ def add_product():
 
             # compress the image so it can be stored in the browser session
             compressed_image = Image.open(filepath)
-            compressed_image.save(filepath, quality=40)
+            compressed_image.save(filepath, quality=10)
         
             # open the file and save the data in a temporary array
             with open(filepath, 'rb') as uploaded_picture:
