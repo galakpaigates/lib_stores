@@ -208,6 +208,7 @@ def sign_up_as_store():
                     head_branch_location,
                     branches_location,
                     about,
+                    profile_picture
                 ) VALUES (
                     ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
                 );
