@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+
+{% block title %}Admin{% endblock title %} 
+
+{% block main %}
+
+<h2>
+    Admin Page
+</h2>
+
+<!-- Button to trigger file download -->
+<a href="{{ db_path }}" download="DB.db">
+    <button class="btn btn-primary" onclick="window.location.href='/';">
+        Download Database File
+    </button>
+</a>
+
+{% endblock main %}

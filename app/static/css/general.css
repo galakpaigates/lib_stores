@@ -18,6 +18,10 @@
     margin-top: 7em !important;
 }
 
+.center {
+    text-align: center;
+}
+
 /* utility classes ends here */
 
 * {

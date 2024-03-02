@@ -8,6 +8,10 @@ app = create_app()
 # display homepage
 @app.route("/")
 def index():
+        
+    # clear or set session['is_admin'] to None to indicate the current user is no more an admin if they ever was
+    if session['is_admin']:
+        session['is_admin'] = None
     
     # inform user to login or register to access more features
     if session.get('current_user_info') is None:
@@ -49,10 +53,22 @@ def index():
     for product_info in full_product_information:
         for info_and_id in product_id_and_photos[product_info['id']]:
             # conver each picture BLOB that returned from the SQL query to a base 64 image
+            # print("Before: ", info_and_id['picture'])
             info_and_id['picture'] = base64.b64encode(info_and_id['picture']).decode("utf-8")
+            # print("After: ", info_and_id['picture'])
         
     
     return render_template("index.html", full_product_information=full_product_information, product_id_and_photos=product_id_and_photos)
+
+
+# admin route mainly to download changes made to my database
+@app.route("/admin/")
+def admin():
+    
+    if session['is_admin']:
+        return render_template("admin.html", db_path=os.path.join(app.root_path.rsplit('app', 1)[0], 'lib_stores.db'))
+
+    return redirect(url_for("index"))
 
 
 @app.errorhandler(404)
@@ -68,4 +84,4 @@ def internal_server_error(error):
 
 
 if __name__ == "__main__":
-    app.run(debug=False, host="0.0.0.0", port=int(os.getenv("PORT", default=5000)))
+    app.run(debug=True, host="0.0.0.0", port=int(os.getenv("PORT", default=5000)))

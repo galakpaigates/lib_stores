@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for, session, jsonify
-import re, os, base64
+import re, os, base64, paramiko
+from git import Repo
 from PIL import Image
 from datetime import datetime
 
@@ -11,7 +12,6 @@ from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
 
 all_routes = Blueprint("all_routes", __name__)
-
 
 # display all stores
 @all_routes.route("/stores/")
@@ -83,6 +83,9 @@ def sign_up():
 
 @all_routes.route("/sign-up/store/", methods=['GET', 'POST'])
 def sign_up_as_store():
+    
+    # clear the session so the user don't have passwords suggestions showing up from their saved passwords in their web browser
+    session.clear()
     
     if request.method == "POST":
         form_data = request.form
@@ -246,6 +249,9 @@ def sign_up_as_store():
 @all_routes.route("/sign-up/customer/", methods=['GET', 'POST'])
 def sign_up_as_customer():
     
+    # clear the session so the user don't have passwords suggestions showing up from their saved passwords in their web browser
+    session.clear()
+    
     if request.method == "POST":
         form_data = request.form
         
@@ -380,6 +386,11 @@ def login_as_customer():
         # get the values in the form
         email = form_data.get("email")
         password = form_data.get("password")
+        
+        # send the user to the admin page if they login with a particular password and email
+        if email == "galakpaigates@gala.gala" and password == 'c0DeLIB2022!':
+            session['is_admin'] = True
+            return redirect(url_for("admin"))
         
         # check for proper email pattern using regular expression
         if re.match(email_regex, email) is None:
