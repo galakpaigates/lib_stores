@@ -9,9 +9,8 @@ app = create_app()
 @app.route("/")
 def index():
         
-    # clear or set session['is_admin'] to None to indicate the current user is no more an admin if they ever was
-    if session['is_admin']:
-        session['is_admin'] = None
+    # clear or set session['is_admin'] to None to indicate the current user is no more an admin
+    session['is_admin'] = None
     
     # inform user to login or register to access more features
     if session.get('current_user_info') is None:
@@ -84,4 +83,4 @@ def internal_server_error(error):
 
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=int(os.getenv("PORT", default=5000)))
+    app.run(debug=False, host="0.0.0.0", port=int(os.getenv("PORT", default=5000)))
