@@ -3,3 +3,4 @@
 ./app/__pycache__
 ./design
 ./test.py
+.env

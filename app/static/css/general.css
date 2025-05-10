@@ -10,6 +10,7 @@
 }
 
 /* utility classes starts here */
+
 .none {
     display: none;
 }
@@ -25,7 +26,7 @@
 /* utility classes ends here */
 
 * {
-    font-family: 'Stylish', sans-serif;
+    font-family: "Stylish", sans-serif;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -46,8 +47,8 @@ a:hover {
 .dropdown-menu,
 .nav-link,
 .dropdown-item,
-#search_form input[type='search'],
-#search_form button[type='submit'],
+#search_form input[type="search"],
+#search_form button[type="submit"],
 .navbar-toggler-icon {
     color: var(--white) !important;
     background-color: var(--dark-blue) !important;
@@ -56,7 +57,6 @@ a:hover {
 }
 
 #navbar {
-    margin-bottom: 5vh;
     display: flex;
     flex-direction: row;
     position: fixed;
@@ -64,18 +64,22 @@ a:hover {
     top: 0;
     right: 0;
     z-index: 1000;
+    height: auto;
+    max-height: 100px;
+    height: 100px;
+    background-color: var(--dark-blue);
 }
 
-#search_form input[type='search']::placeholder {
+#search_form input[type="search"]::placeholder {
     color: var(--white) !important;
 }
 
-#search_form input[type='search'] {
+#search_form input[type="search"] {
     background-color: transparent;
     text-align: left !important;
 }
 
-#search_form button[type='submit']:hover {
+#search_form button[type="submit"]:hover {
     color: var(--white) !important;
     background-color: var(--verdigris) !important;
 }
@@ -84,6 +88,14 @@ body {
     background-color: var(--white);
     overflow-x: hidden;
     margin-bottom: 15vh;
+}
+
+main {
+    position: absolute;
+    top: 8vh;
+    left: 0;
+    right: 0;
+    padding-top: 3vh;
 }
 
 main h1,
@@ -144,7 +156,10 @@ textarea {
     flex-direction: column;
 }
 
-#search_results_div .each_search_result_div .each_search_result_info_div .search_result_price_available_quantity_span {
+#search_results_div
+    .each_search_result_div
+    .each_search_result_info_div
+    .search_result_price_available_quantity_span {
     font-size: 19px;
 }
 
@@ -176,12 +191,12 @@ textarea {
         gap: 12px;
     }
 
-    #search_form input[type='search'] {
+    #search_form input[type="search"] {
         width: 29.5vw;
         max-width: 400px;
     }
 
-    #search_form button[type='submit'] {
+    #search_form button[type="submit"] {
         width: 9.5vw;
         max-width: 150px;
     }
@@ -223,8 +238,8 @@ textarea {
         gap: 1em;
     }
 
-    #search_form input[type='search'],
-    #search_form button[type='submit'] {
+    #search_form input[type="search"],
+    #search_form button[type="submit"] {
         text-align: center;
         width: 100% !important;
         margin-right: 0 !important;
@@ -262,4 +277,10 @@ textarea {
     }
 }
 
+#navbarSupportedContent {
+    background-color: var(--dark-blue);
+    width: 100vw;
+    margin: 0 -17px;
+    padding: 0 17px;
+}
 /* mobile only css ends here */

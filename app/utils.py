@@ -4,9 +4,9 @@ from flask import render_template, request, session, redirect, url_for, current_
 from string import ascii_uppercase, ascii_lowercase, punctuation, digits, ascii_letters
 from email.message import EmailMessage
 
-PERSONAL_MAIL_ADDR = "jeedoarkoi@gmail.com"
-MAIL_ADDR = "galakpaigates@gmail.com"
-APP_PASSWORD = "tscg phol rbhl mygg"
+PERSONAL_MAIL_ADDR = os.getenv("PERSONAL_MAIL_ADDR")
+MAIL_ADDR = os.getenv("MAIL_ADDR")
+APP_PASSWORD = os.getenv("APP_PASSWORD")
 
 # email regular expression for email validation
 email_regex = r'^\b[A-Za-z0-9.\'_%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
@@ -30,7 +30,6 @@ ALLOWED_EXTENSIONS = [
     'jpeg',
     'gif'
 ]
-
 
 def refill_input_fields(
         sign_up_type,
@@ -186,10 +185,10 @@ def validate_contact_number(number):
                 return False
     
     if (number.startswith("077") or number.startswith("088") or number.startswith("0555")) and len(number.strip()) == 10:
-        return True
+        return number[1:]
     elif (number.startswith("+23177") or number.startswith("+23188") or number.startswith("+231555")) and len(number.strip()) == 13:
-        return True
-    return False
+        return number[4:]
+    return None
     
 
 def validate_mobile_money_number(number):
@@ -212,22 +211,22 @@ def validate_mobile_money_number(number):
 
 def validate_password(password):
     
-    if len(password.strip()) < 12:
+    if len(password.strip()) < 7:
         return False
 
     has_digit = False
     has_punctuation = False
     has_uppercase = False
     has_lowercase = False
-    
+
     for character in password:
-        if has_digit == False and character in digits:
+        if not has_digit and character in digits:
             has_digit = True
-        elif has_punctuation == False and character in punctuation:
+        elif not has_punctuation and character in punctuation:
             has_punctuation = True
-        elif has_uppercase == False and character in ascii_uppercase:
+        elif not has_uppercase and character in ascii_uppercase:
             has_uppercase = True
-        elif has_lowercase == False and character in ascii_lowercase:
+        elif not has_lowercase and character in ascii_lowercase:
             has_lowercase = True
         elif has_digit and has_punctuation and has_uppercase and has_lowercase:
             return True
@@ -235,6 +234,8 @@ def validate_password(password):
     return False
 
 
+# check if the actually provided a category of product atleast a single word
+# check the boolean value in the tuple that was returned
 def validate_product_categories_and_branches_location(to_validate):
     to_validate = remove_punc_from_str_end(to_validate, len(to_validate) - 1)
     
@@ -286,7 +287,7 @@ def validate_image(file_path):
                 return True
             return False
     
-    except Exception as e:
+    except Exception:
         return False
 
 
@@ -348,17 +349,6 @@ def count_special_char(string):
             special_char_count += 1
             
     return special_char_count
-
-
-def count_numbers(string):
-    
-    number_count = 0
-    
-    for char in string:
-        if char in punctuation:
-            number_count += 1
-            
-    return number_count
 
 
 def count_numbers(string):

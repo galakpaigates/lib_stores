@@ -12,7 +12,7 @@
                 <a href="/stores/{{ store.name | replace(' ', '-') }}+{{ store.id }}" class="list-group-item list-group-item-action flex-column align-items-start">
                     <div class="each_existing_store_div">
                         <div class="each_existing_store_profile_picture_div">
-                            <img src="data:image/png;base64,{{ store.profile_picture }}" alt="{{ store.name | title }}" class="each_existing_stores_profile_picture">
+							<img src="{% if store.profile_picture %}data:image/png;base64,{{ store.profile_picture }}{% else %}{{ url_for("static", filename='imgs/no_profile.png') }}{% endif %}" alt="{{ store.name | title }}" class="each_existing_stores_profile_picture">
                         </div>
                         <div class="each_existing_store_description_div">
                             <div class="d-flex w-100 justify-content-between each_existing_store_div_title">
@@ -34,11 +34,11 @@
         <div id="store_full_information_div">
             <div id="store_home_page_header_div">
                 <div id="store_profile_picture_div">
-                    <img src="data:image/png;base64,{{ store_full_information.profile_picture }}" alt="{{ store_full_information.name | title }}" id="store_profile_picture">
+					<img src="{% if store_full_information.profile_picture %}data:image/png;base64,{{ store_full_information.profile_picture }}{% else %}{{ url_for("static", filename='imgs/no_profile.png') }}{% endif %}" alt="{{ store_full_information.name | title }}" id="store_profile_picture">
                 </div>
                 <div id="store_name_div">
                     <h1>{{ store_full_information.name }}</h1>
-                    <h2>{{ store_full_information.categories_of_product }}</h2>
+                    <h2>{{ store_full_information.categories_of_product or "" }}</h2>
                     <h3>{{ store_full_information.head_branch_location }}<h3>
                 </div>
             </div>
@@ -128,7 +128,7 @@
                                 </tr>
                                 <tr>
                                     <th scope="row">All Branches: </th>
-                                    <td>{{ store_full_information.branches_location }}</td>
+                                    <td>{{ store_full_information.branches_location or "" }}</td>
                                 </tr>
                                 <tr>
                                     <th scope="row">Contact Number: </th>
@@ -140,7 +140,7 @@
                                 </tr>
                                 <tr>
                                     <th scope="row">More Information: </th>
-                                    <td>{% if store_full_information.about | length > 0 %} {{ store_full_information.about }} {% else %} Just Business {% endif %} </td>
+                                    <td>{% if store_full_information.about and store_full_information.about | length > 0 %} {{ store_full_information.about }} {% else %} Just Business {% endif %} </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -159,6 +159,6 @@
 
 {% block additional_style %}
     #search_results_div {
-        margin-top: -10px;
+        margin-top: 75px;
     }
 {% endblock additional_style %}

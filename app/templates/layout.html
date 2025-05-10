@@ -26,7 +26,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-light" id="navbar">
         <a class="navbar-brand" href="{{ url_for("index") }}">
             <img src="{{ url_for("static", filename="imgs/site_logo.png") }}" alt="Logo" id="site_logo">
-        </a>
+		</a>
 
         <button class="navbar-toggler" id="navbar_toggle_btn" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -36,7 +36,7 @@
 
             {% if session['current_user_info'] %}
             
-                <ul class="navbar-nav mr-auto" id="store_product_latest_ul">
+                <ul class="mr-auto navbar-nav" id="store_product_latest_ul">
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('all_routes.display_all_stores') }}">Stores</a>
                     </li>
@@ -47,18 +47,18 @@
                     {% endif %}
                 </ul>
                     
-				<form  class="form-inline my-2 my-lg-0" id="search_form">
+				<form  class="my-2 form-inline my-lg-0" id="search_form">
                     <input class="form-control" type="search" placeholder="Type to Search" id="search_input" aria-label="Search" name="full_search">
                     <button class="btn btn-outline-success" id="search_btn" type="submit">Search</button>
                 </form>
 
-                <ul class="navbar-nav mr-auto" id="profile_and_logout_ul">
+                <ul class="mr-auto navbar-nav" id="profile_and_logout_ul">
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('all_routes.logout') }}">Log Out</a>
                     </li>
                     <li class="nav-item" id="profile_picture_li">
                         <a class="nav-link" href="{{ url_for('index') }}">
-                            {% if session['current_user_info']['account_type'] == "customer" %}
+                            {% if session['current_user_info']['account_type'] == "customer" or not session['profile_picture'] %}
                                 <img src="{{ url_for("static", filename='imgs/shopping_bag.jpeg') }}" alt="Profile Picture" id="profile_picture">
                             {% else %}
                                 <img src="data:image/png;base64,{{ session['profile_picture'] }}" alt="Profile Picture" id="profile_picture">
@@ -69,18 +69,18 @@
 
             {% else %}
 
-                <ul class="navbar-nav mr-auto" id="store_product_latest_ul">
+                <ul class="mr-auto navbar-nav" id="store_product_latest_ul">
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('all_routes.display_all_stores') }}">Stores</a>
                     </li>
                 </ul>
 
-                <form class="form-inline my-2 my-lg-0" id="search_form">
+                <form class="my-2 form-inline my-lg-0" id="search_form">
                     <input class="form-control" type="search" placeholder="Type to Search" id="search_input" aria-label="Search" name="full_search">
                     <button class="btn btn-outline-success" id="search_btn" type="submit">Search</button>
                 </form>
 
-                <ul class="navbar-nav mr-auto" id="signup_login_ul">
+                <ul class="mr-auto navbar-nav" id="signup_login_ul">
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('all_routes.sign_up') }}">Sign Up</a>
                     </li>

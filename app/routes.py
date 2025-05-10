@@ -1,6 +1,5 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for, session, jsonify
-import re, os, base64, paramiko
-from git import Repo
+import re, os, base64
 from PIL import Image
 from datetime import datetime
 
@@ -20,30 +19,31 @@ def display_all_stores():
     
     # convert each BLOB profile picture to a base64 string that can be used as src in an `img` tag
     for store in all_existing_stores:
-        store['profile_picture'] = base64.b64encode(store['profile_picture']).decode('utf-8')
+        if store['profile_picture']:
+            store['profile_picture'] = base64.b64encode(store['profile_picture']).decode('utf-8')
     
     return render_template("stores.html", all_existing_stores=all_existing_stores)
 
 
 @all_routes.route("/stores/<store_name_id>/")
 def dynamic_store(store_name_id):
-    
     store_name, store_id = store_name_id.split("+")
     
     # check for IndexError or any other error in the split to show that there is no `id` and claim the the route is invalid
     try:
         store_full_information = lib_stores_db.execute("SELECT * FROM stores WHERE id = ?;", store_id)[0]
     except Exception:
-        flash(message=("Invalid Store!", "Error: The requested store does not exists in LIB Stores!"), category="danger")
+        flash(message=str(("Invalid Store!", "Error: The requested store does not exists in LIB Stores!")), category="danger")
         return redirect(url_for("all_routes.display_all_stores"))
     
     # check if the name passed with the url is the same as the name in the database for the user with the `id`
     if len(store_full_information) <= 0 or store_full_information['name'] != store_name.replace("-", " "):
-        flash(message=("Invalid Store!", "Error: The requested store does not exists in LIB Stores!"), category="danger")
+        flash(message=str(("Invalid Store!", "Error: The requested store does not exists in LIB Stores!")), category="danger")
         return redirect(url_for("all_routes.display_all_stores"))
     
     # convert the store's profile picture from BLOB to base64 string
-    store_full_information['profile_picture'] = base64.b64encode(store_full_information['profile_picture']).decode('utf-8')
+    if store_full_information['profile_picture']:
+        store_full_information['profile_picture'] = base64.b64encode(store_full_information['profile_picture']).decode('utf-8')
     
     store_products = lib_stores_db.execute("SELECT * FROM products WHERE store_id = ?", store_id)
         
@@ -106,19 +106,19 @@ def sign_up_as_store():
         # validate store's sign up information
         
         # store name too short
-        if len(store_name.strip()) < 2:
+        if store_name and len(store_name.strip()) < 2:
             return refill_input_fields(sign_up_type="store", store_name_error="Store Name must be atleast 2 character long")
         
         # store name too long
-        elif len(store_name.strip()) > 120:
-            return refill_input_fields(sign_up_type="store", store_name_error="Store Name must be atmost 120 character long")
+        elif store_name and len(store_name.strip()) > 150:
+            return refill_input_fields(sign_up_type="store", store_name_error="Store Name must be atmost 150 character long")
         
         # ensure store name does not have special characters
-        elif find_punctuation_in_str(store_name.strip()):
+        elif store_name and find_punctuation_in_str(store_name.strip()):
             return refill_input_fields(sign_up_type="store", store_name_error="Store Name must not contain any special character")
         
         # email not valid
-        elif re.match(email_regex, email) is None:
+        elif email and re.match(email_regex, email) is None:
             return refill_input_fields(sign_up_type="store", email_error="Invalid email address!")
         
         # check if the email already exists
@@ -143,55 +143,50 @@ def sign_up_as_store():
         
         # ensure password len(password) >= 12 and lower upper punc and digit in password
         elif not validate_password(password):
-            return refill_input_fields(sign_up_type="store", password_error="Password must be atleast 12 characters long and must have atleast one special symbol, uppercase, lowercase and number")
+            return refill_input_fields(sign_up_type="store", password_error="Password must be atleast 8 characters long and must have atleast one special symbol, uppercase, lowercase and number")
 
         # ensure the confirmation password is the same as the first password
         elif confirm_password != password:
             return refill_input_fields(sign_up_type="store", confirm_password_error="Passwords don't match!")
         
-        # check if the actually provided a category of product atleast a single word
-        # check the boolean value in the tuple that was returned
-        elif not validate_product_categories_and_branches_location(product_categories)[1]:
-            return refill_input_fields(sign_up_type="store", product_categories_error="Invalid product category! Please follow the specifications above!")
-
         # ensure the user actually gave a head branch
         elif head_branch_location is None or len(head_branch_location) < 2:
             return refill_input_fields(sign_up_type="store", head_branch_location_error="Please provide a descriptive Head Branch location!")
-
-        # check if the actually provided a location atleast a single word
-        # check the boolean value in the tuple that was returned
-        elif not validate_product_categories_and_branches_location(branches_location)[1]:
-            return refill_input_fields(sign_up_type="store", branches_location_error="Invalid branches location! Please follow the specifications above!")
         
         # validate profile picture
-        elif len(profile_picture.filename) < 5:
+        elif profile_picture and profile_picture.filename and len(profile_picture.filename) < 5:
             return refill_input_fields(sign_up_type="store", file_upload_error="Profile Picture / Logo is required!")
 
         elif not isinstance(profile_picture, FileStorage) or profile_picture is None or profile_picture.filename is None:
             return refill_input_fields(sign_up_type="store", file_upload_error="Please provide a valid image!")
 
-        # save the file to a temporary location to open it and read its information, then store in the database as BLOB
-        filename = secure_filename(profile_picture.filename)
-        filepath = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
-        
-        # save the image to the temporary upload folder
-        profile_picture.save(filepath)
+        contact_number = validate_contact_number(contact_number)
+        mobile_money_number = validate_contact_number(mobile_money_number)
 
-        # final image validation to check the dimensions and format of the uploaded file
-        if validate_image(filepath) == False:
-            return refill_input_fields(sign_up_type="store", file_upload_error="Please provide a valid image!")
+        picture_data = None
 
-        # compress the image so it can be stored in the browser session
-        compressed_image = Image.open(filepath)
-        compressed_image.save(filepath, quality=10)
-        
-        with open(filepath, 'rb') as uploaded_picture:
-            picture_data = uploaded_picture.read()
+        if profile_picture:
+            # save the file to a temporary location to open it and read its information, then store in the database as BLOB
+            filename = secure_filename(profile_picture.filename)
+            filepath = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
+            
+            # save the image to the temporary upload folder
+            profile_picture.save(filepath)
+
+            # final image validation to check the dimensions and format of the uploaded file
+            if validate_image(filepath) == False:
+                return refill_input_fields(sign_up_type="store", file_upload_error="Please provide a valid image!")
+
+            # compress the image so it can be stored in the browser session
+            compressed_image = Image.open(filepath)
+            compressed_image.save(filepath, quality=10)
+            
+            with open(filepath, 'rb') as uploaded_picture:
+                picture_data = uploaded_picture.read()
              
-                
         # update product_categories and branches_location per the changes in teh validation function
-        branches_location = validate_product_categories_and_branches_location(branches_location)[0]
-        product_categories = validate_product_categories_and_branches_location(product_categories)[0]
+        branches_location = branches_location and validate_product_categories_and_branches_location(branches_location)[0] or None
+        product_categories = product_categories and validate_product_categories_and_branches_location(product_categories)[0] or None
                 
         # make sure about store has a value that can be stored in the database and not None
         if about_store is None or len(about_store.strip()) <= 0:
@@ -220,16 +215,16 @@ def sign_up_as_store():
             email,
             generate_password_hash(password=password, method='pbkdf2:sha512:600000'),
             datetime.now().strftime("%d-%m-%Y %H:%M"),
-            clean_phone_number(contact_number),
-            clean_phone_number(mobile_money_number),
-            product_categories,
+            contact_number,
+            mobile_money_number,
+            product_categories or None,
             head_branch_location,
-            branches_location,
-            about_store,
-            picture_data
+            branches_location or None,
+            about_store or None,
+            picture_data or None
         )
         
-        # replate all store profile pictures
+        # replace all store profile pictures
         # lib_stores_db.execute(
         #     """
         #         UPDATE stores 
@@ -366,7 +361,7 @@ def login_as_store():
             'account_type': 'store'
         }
         
-        session['profile_picture'] = base64.b64encode(existing_store['profile_picture']).decode('utf-8')
+        session['profile_picture'] = existing_store['profile_picture'] and base64.b64encode(existing_store['profile_picture']).decode('utf-8') or None
         
         flash(message=("Successfully Logged In!", "Success: You have Logged In to your Store as Manager!",), category="success")
         return redirect(url_for("index"))

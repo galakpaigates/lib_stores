@@ -6,8 +6,6 @@
 
 {% block main %}
 
-    <h3 id="our_products_h3">Our Products</h3>
-
     {% if full_product_information %}
 
         <div id="all_products_div">
@@ -45,12 +43,19 @@
 
                         <a href="/products/{{ product_info.id }}+{{ product_info.store_id }}">
                             <div class="product_info_div">
-                                <span class="product_name_span">
-                                    {{ product_info.name }}
-                                    <span>
-                                        ({{ product_info.price }})
-                                    </span>
-                                </span>
+                                <div class="px-2">
+									<div class="fw-bold" style="font-size: 1.2rem">
+										{{ product_info.name }}
+									</div>
+                                    <div class="d-flex justify-content-around width-100" id="price-and-stock-wrapper">
+										<span>
+											Price: {{ product_info.price }}
+										</span>
+										<span>
+											{{ product_info.quantity }} in stock
+										</span>
+                                    </div>
+                                </div>
                                 <button class="purchase_product">&dollar; Purchase</button>
                             </div>
                         </a>
